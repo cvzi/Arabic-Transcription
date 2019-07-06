@@ -21,6 +21,15 @@ body{
   width:90%;
   font-size:110%
 }
+#keyboard button{
+  font-size:150%;
+  min-width:2.2em;
+  margin:2px
+}
+#keyboard .empty{
+  font-size:200%;
+  margin:2px
+}
 </style>
 <script>
 
@@ -34,6 +43,8 @@ function main (ev) {
   const inputAr = document.getElementById('textAr')
   inputAr.addEventListener('keyup', transliterate)
   inputAr.addEventListener('click', transliterate)
+  inputAr.addEventListener('change', transliterate)
+  keyboard(document.getElementById('keyboard'), inputAr)
 }
 
 function transliterate (ev) {
@@ -163,7 +174,7 @@ const post = {
   '@t': function (textLa, index) {
     // ة at the end of a word is a 'h', else 't'
     const whitespace = /\s/
-    if (textLa.length == index+3 || textLa.slice(index+2, index+3).match(whitespace)) {
+    if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
       return replaceCharsAt(textLa, index, 2, 'h')
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
@@ -175,7 +186,7 @@ function ar2la (textAr) {
   const logPre = document.getElementById('log')
   logPre.innerHTML = ''
   let log = function (text) {
-    if(!log.firstChild) {
+    if (!log.firstChild) {
       logPre.appendChild(document.createTextNode('Errors:\n'))
     }
     logPre.appendChild(document.createTextNode(text))
@@ -199,7 +210,7 @@ function ar2la (textAr) {
       textLa += charAr
     } else {
       textLa += '#'
-      log(charAr + '\t' + charAr.charCodeAt(0) + '\t' + escape(charAr).replace("%","\\"))
+      log(charAr + '\t' + charAr.charCodeAt(0) + '\t' + escape(charAr).replace('%', '\\'))
     }
   }
 
@@ -219,6 +230,207 @@ function ar2la (textAr) {
   return textLa
 }
 
+function keyboard (div, input) {
+  const Key = function (name, str) {
+    this.name = name
+    this.str = str
+  }
+  const Empty = function (width) {
+    this.width = width
+  }
+  const layout = [
+    [
+      new Empty(3),
+      '١',
+      '٢',
+      '٣',
+      '٤',
+      '٥',
+      '٦',
+      '٧',
+      '٨',
+      '٩',
+      '٠'],
+    [
+      'ص',
+      'ض',
+      'ث',
+      'ق',
+      'ف',
+      'غ',
+      'ع',
+      'ه',
+      'خ',
+      'ح',
+      ['ج',
+        'چ'],
+      ['د',
+        '﷼']
+    ],
+    [
+      new Empty(3),
+      'ش',
+      'س',
+      'ي',
+      ['ب',
+        'پ'],
+      ['ل',
+        'لا',
+        'لإ',
+        'لآ',
+        'لأ'],
+      ['ا',
+        'أ',
+        'آ',
+        'إ'],
+      'ت',
+      'ن',
+      'م',
+      ['ك',
+        'گ'],
+      'ذ'
+    ],
+    [
+      new Empty(3),
+      'ئ',
+      'ء',
+      'ؤ',
+      'ر',
+      'ى',
+      'ة',
+      'و',
+      ['ز',
+        'ژ'],
+      'ط',
+      'ظ',
+      [new Key('Diacritics', false),
+        'ً',
+        'َ',
+        'ٌ',
+        'ِ',
+        'ٍ',
+        'ّ',
+        'ْ',
+        'ٰ',
+        'ٓ',
+        'ـ',
+        'ُ'
+      ]
+    ],
+    [
+      new Empty(8),
+      '،',
+      new Key('\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583', ' '),
+      ['.',
+        '!',
+        '،',
+        '؛',
+        '؟'],
+      new Key('\u21b5', '\n')
+    ]
+
+  ]
+
+  const insert = function insert (ev) {
+    if (this.dataset.menuopen) {
+      return
+    }
+    input.value += this.dataset.str
+    input.dispatchEvent(new Event('change'))
+  }
+  const mouseoverMenu = function mouseoverMenu (ev) {
+    const el = this
+    clearTimeout(parseInt(el.dataset.timeOutOut))
+    el.dataset.timeOutOver = window.setTimeout(function () { showMenu.call(el, ev) }, 750)
+  }
+  const mouseoutMenu = function mouseoutMenu (ev) {
+    const el = this
+    clearTimeout(parseInt(el.dataset.timeOutOver))
+    el.dataset.timeOutOut = window.setTimeout(function () { hideMenu.call(el, ev) }, 1500)
+  }
+  const showMenu = function showMenu (ev) {
+    if (this.dataset.menuopen) {
+      return
+    }
+    this.dataset.menuopen = 'true'
+    const menu = document.createElement('div')
+    const arr = JSON.parse(this.dataset.menu)
+
+    for (let i = 0; i < arr.length; i++) {
+      const el = makeButton(arr[i])
+      menu.appendChild(el)
+    }
+
+    menu.style = 'position:absolute'
+    menu.className = 'menu'
+    this.appendChild(menu)
+  }
+  const hideMenu = function hideMenu (ev) {
+    if (!this.dataset.menuopen) {
+      return
+    }
+    if (this.querySelector('.menu')) {
+      this.querySelector('.menu').remove()
+    }
+    this.dataset.menuopen = ''
+  }
+
+  const button = function button (title) {
+    const el = document.createElement('button')
+    el.appendChild(document.createTextNode(title))
+    return el
+  }
+  const insertOnClick = function addStrOnClick (el, str) {
+    el.dataset.str = str
+    el.addEventListener('click', insert)
+  }
+  const makeButton = function makeButton (obj) {
+    let el
+    if (obj instanceof Empty) {
+      el = document.createElement('span')
+      el.className = 'empty'
+      for (let i = 0; i < obj.width; i++) {
+        el.appendChild(document.createTextNode('\u00A0'))
+      }
+    } else if (typeof obj === 'string') {
+      el = button(obj)
+      insertOnClick(el, obj)
+    } else if (obj instanceof Key) {
+      el = button(obj.name)
+      if (obj.str !== false) {
+        insertOnClick(el, obj.str)
+      }
+    } else if (Array.isArray(obj)) {
+      el = makeButton(obj[0])
+      for (let i = 1; i < obj.length; i++) {
+        addToMenu(el, obj[i])
+      }
+    } else {
+      console.log('Unkown object:\n' + obj)
+    }
+    return el
+  }
+  const addToMenu = function addToMenu (el, key) {
+    if (!el.dataset.menu) {
+      el.dataset.menu = '[]'
+      el.addEventListener('mouseover', mouseoverMenu)
+      el.addEventListener('mouseout', mouseoutMenu)
+    }
+    const arr = JSON.parse(el.dataset.menu)
+    arr.push(key)
+    el.dataset.menu = JSON.stringify(arr)
+  }
+
+  for (let r = 0; r < layout.length; r++) {
+    const row = document.createElement('div')
+    div.append(row)
+    for (let k = 0; k < layout[r].length; k++) {
+      const el = makeButton(layout[r][k])
+      row.appendChild(el)
+    }
+  }
+}
+
 </script>
 </head>
 <body>
@@ -228,11 +440,13 @@ function ar2la (textAr) {
   <main>
   <article>
   <div>
-    <label class="input_label" for="textAr">Arabic script:</label> <input type="text" name="textAr" id="textAr" value="العَرَبِيَّة‎" dir="rtl">
+    <label class="input_label" for="textAr">Arabic script:</label> <textarea id="textAr" dir="rtl">العَرَبِيَّة‎</textarea>
     <br>
     <br>
-    <label for="textLa">Latin script:</label> <input type="text" name="textLa" id="textLa" dir="ltr" readonly>
+    <label class="input_label" for="textLa">Latin script:</label> <textarea id="textLa" dir="ltr" readonly>‎</textarea>
     <br>
+    <br>
+    <div id="keyboard"></div>
     <br>
     <pre id="log" style="font-size:200%"></pre>
     <br>
@@ -245,7 +459,6 @@ function ar2la (textAr) {
   </div>
   </article>
   </main>
-
 
   <!-- https://github.com/tholman/github-corners -->
   <div>
