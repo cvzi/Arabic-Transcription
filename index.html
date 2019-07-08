@@ -208,7 +208,7 @@ function isNextToVowel (text, index, len) {
 }
 
 function isVowel (char) {
-  return 'aeiouy'.indexOf(char) !== -1
+  return 'aeiouyā'.indexOf(char) !== -1
 }
 
 const map = {
@@ -217,9 +217,12 @@ const map = {
   'إ': '2',
   'آ': '2',
   'ء': '2',
-  'ٱ': '\'',
+  'ٱ': 'ʾ',
   'ك': 'k',
+  'گ': 'g',
+  'ݣ': 'g',
   'ب': 'b',
+  'پ': 'p',
   'و': '@w',
   'ؤ': 'u2',
   'ه': 'h',
@@ -227,9 +230,11 @@ const map = {
   'ذ': 'dh',
   'ر': 'r',
   'ز': 'z',
+  'ژ': 'dz',
   'ا': 'aa',
   'ل': 'l',
   'ج': 'j',
+  'چ' : 'tj',
   'خ': 'kh',
   'ح': '7',
   'م': 'm',
@@ -238,6 +243,7 @@ const map = {
   'ث': 'th',
   'ة': '@t',
   'ق': 'q',
+  'ڨ': 'g',
   'ف': 'f',
   'س': 's',
   'ش': 'sh',
@@ -252,9 +258,11 @@ const map = {
   'ئ': '2',
 
   '؟': '?',
-  'ـ': '-',
+  'ـ': '',
   '،': ',',
   '؛': ';',
+
+  '﷼': 'rial',
 
   '\u064F': 'u',
   '\u064E': 'a',
@@ -264,7 +272,14 @@ const map = {
     // Shadda, consonant doubling
     return textLa + textLa[textLa.length - 1]
   },
-
+  '\u064C': '-un',
+  '\u064D': '-in',
+  '\u064B': '-an',
+  '\u0670': 'ā',
+  '\u0653': function (textAr, textLa, index) {
+    // Shadda, consonant doubling
+    return textLa.slice(0,textLa.length - 2) + 'ʾ' + textLa[textLa.length - 1]
+  },
   '٠': '0',
   '١': '1',
   '٢': '2',
@@ -482,14 +497,13 @@ function keyboard (div, input) {
     el.dataset.timeOutOut = window.setTimeout(function () { hideMenu.call(el, ev) }, 1500)
   }
   const showMenu = function showMenu (ev) {
+    if (this.dataset.menuopen) {
+      return
+    }
     if (this.parentNode.parentNode.querySelector('.menu')) {
       // Hide other menus
       this.parentNode.parentNode.querySelector('.menu').parentNode.dataset.menuopen = ''
       this.parentNode.parentNode.querySelector('.menu').remove()
-    }
-
-    if (this.dataset.menuopen) {
-      return
     }
     this.dataset.menuopen = 'true'
     const menu = document.createElement('div')
