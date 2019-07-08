@@ -103,7 +103,7 @@ button:hover{
 }
 #keyboard .menu{
   background-color:rgba(28, 176, 246, 0.7);
-  border-radius:0 0.5em 0.5em 0.5em;
+  border-radius:0.5em;
   z-index:4
 }
 
@@ -476,6 +476,11 @@ function keyboard (div, input) {
     el.dataset.timeOutOut = window.setTimeout(function () { hideMenu.call(el, ev) }, 1500)
   }
   const showMenu = function showMenu (ev) {
+    if (this.parentNode.parentNode.querySelector('.menu')) {
+      // Hide other menus
+      this.parentNode.parentNode.querySelector('.menu').remove()
+    }
+
     if (this.dataset.menuopen) {
       return
     }
@@ -484,13 +489,24 @@ function keyboard (div, input) {
     const arr = JSON.parse(this.dataset.menu)
 
     for (let i = 0; i < arr.length; i++) {
+      if(i % 4 == 0 && i > 0) {
+        menu.appendChild(document.createElement('br'))
+      }
       const el = makeButton(arr[i])
       menu.appendChild(el)
     }
 
     menu.style = 'position:absolute'
+    const rect = this.getClientRects()[0]
+    menu.style.left = rect.left - rect.width + 'px'
+    menu.style.top = rect.top + rect.height + 'px'
+
     menu.className = 'menu'
     this.appendChild(menu)
+
+    while(window.innerWidth < parseInt(menu.style.left) + menu.clientWidth) {
+      menu.style.left = parseInt(menu.style.left) - 5 + 'px'
+    }
   }
   const hideMenu = function hideMenu (ev) {
     if (!this.dataset.menuopen) {
