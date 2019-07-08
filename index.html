@@ -465,6 +465,12 @@ function keyboard (div, input) {
     input.value += this.dataset.str
     input.dispatchEvent(new Event('change'))
   }
+  const insertDbl = function insertDbl (ev) {
+    if (this.dataset.menuopen) {
+      input.value += this.dataset.str
+      input.dispatchEvent(new Event('change'))
+    }
+  }
   const mouseoverMenu = function mouseoverMenu (ev) {
     const el = this
     clearTimeout(parseInt(el.dataset.timeOutOut))
@@ -478,6 +484,7 @@ function keyboard (div, input) {
   const showMenu = function showMenu (ev) {
     if (this.parentNode.parentNode.querySelector('.menu')) {
       // Hide other menus
+      this.parentNode.parentNode.querySelector('.menu').parentNode.dataset.menuopen = ''
       this.parentNode.parentNode.querySelector('.menu').remove()
     }
 
@@ -526,6 +533,7 @@ function keyboard (div, input) {
   const insertOnClick = function addStrOnClick (el, str) {
     el.dataset.str = str
     el.addEventListener('click', insert)
+    el.addEventListener('dblclick', insertDbl)
   }
   const makeButton = function makeButton (obj) {
     let el
