@@ -149,9 +149,9 @@ function main (ev) {
 function copyArToClipboard(ev) {
   const button = this
   const inputAr = document.getElementById('text_ar')
-  inputAr.focus();
-  inputAr.select();
-  const r = document.execCommand('copy');
+  inputAr.focus()
+  inputAr.select()
+  const r = document.execCommand('copy')
   if(r) {
     this.innerHTML = 'Copied!'
   } else {
@@ -162,9 +162,9 @@ function copyArToClipboard(ev) {
 function copyLaToClipboard(ev) {
   const button = this
   const inputLa = document.getElementById('text_la')
-  inputLa.focus();
-  inputLa.select();
-  const r = document.execCommand('copy');
+  inputLa.focus()
+  inputLa.select()
+  const r = document.execCommand('copy')
   if(r) {
     this.innerHTML = 'Copied!'
   } else {
@@ -213,7 +213,7 @@ function isVowel (char) {
 
 const map = {
 
-  'أ': '2u',
+  'أ': '2',
   'إ': '2',
   'آ': '2',
   'ء': '2',
@@ -318,9 +318,7 @@ const post = {
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
-  },
-  'uua': 'wa',
-  'uuuu': 'oo',
+  }
 }
 
 function ar2la (textAr) {
@@ -373,10 +371,19 @@ function ar2la (textAr) {
 }
 
 function keyboard (div, input) {
+  const stack = [input.value]
   const Key = function (name, str) {
     this.name = name
     this.str = str
+    this.fct = false
   }
+  function FuncKey(name, fct) {
+    Key.call(this, name, false)
+    this.fct = FuncKey.staticFunctions.length
+    FuncKey.staticFunctions.push(fct)
+  }
+  FuncKey.prototype = Object.create(Key.prototype)
+  FuncKey.staticFunctions = []
   const Empty = function (width) {
     this.width = width
   }
@@ -392,7 +399,23 @@ function keyboard (div, input) {
       '٧',
       '٨',
       '٩',
-      '٠'],
+      '٠',
+      new FuncKey('\u27F5', function backspace(ev) {
+        if(this.selectionStart == this.selectionEnd) {
+          this.value = this.value.substr(0, this.selectionStart - 1) + this.value.substr(this.selectionStart)
+        } else {
+          this.value = this.value.substr(0, this.selectionStart) + this.value.substr(this.selectionEnd)
+        }
+        fireChange(this)
+      }),
+      new FuncKey('\u21B6', function undo(ev) {
+        if(stack.length > 0) {
+          this.value = stack.pop()
+          this.dispatchEvent(new Event('change'))
+        }
+      }),
+
+      ],
     [
       'ص',
       'ض',
@@ -473,17 +496,34 @@ function keyboard (div, input) {
 
   ]
 
+  const fireChange = function fireChange (el) {
+    if(el.value !== stack[stack.length - 1]) {
+      stack.push(el.value)
+    }
+    if(stack.length > 1000) {
+      stack = stack.slice(500)
+    }
+    el.dispatchEvent(new Event('change'))
+  }
   const insert = function insert (ev) {
     if (this.dataset.menuopen) {
       return
     }
-    input.value += this.dataset.str
-    input.dispatchEvent(new Event('change'))
+    if (input.selectionStart || input.selectionStart === 0) {
+      input.value = input.value.substring(0, input.selectionStart) + this.dataset.str + input.value.substring(input.selectionEnd)
+    } else {
+      input.value += this.dataset.str
+    }
+    fireChange(input)
   }
   const insertDbl = function insertDbl (ev) {
     if (this.dataset.menuopen) {
-      input.value += this.dataset.str
-      input.dispatchEvent(new Event('change'))
+      if (input.selectionStart || input.selectionStart === 0) {
+        input.value = input.value.substring(0, input.selectionStart) + this.dataset.str + input.value.substring(input.selectionEnd)
+      } else {
+        input.value += this.dataset.str
+      }
+      fireChange(input)
     }
   }
   const mouseoverMenu = function mouseoverMenu (ev) {
@@ -549,6 +589,12 @@ function keyboard (div, input) {
     el.addEventListener('click', insert)
     el.addEventListener('dblclick', insertDbl)
   }
+  const functionOnClick = function execFunctionOnClick (el, fct) {
+    el.dataset.fct = fct
+    el.addEventListener('click', function(ev) {
+      FuncKey.staticFunctions[this.dataset.fct].call(input, ev, this)
+    })
+  }
   const makeButton = function makeButton (obj) {
     let el
     if (obj instanceof Empty) {
@@ -564,6 +610,9 @@ function keyboard (div, input) {
       el = button(obj.name)
       if (obj.str !== false) {
         insertOnClick(el, obj.str)
+      }
+      if (obj.fct !== false) {
+        functionOnClick(el, obj.fct)
       }
     } else if (Array.isArray(obj)) {
       el = makeButton(obj[0])
