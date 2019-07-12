@@ -104,6 +104,7 @@ button:hover{
   z-index:2
 }
 #keyboard .menu{
+  position:absolute;
   background-color:rgba(28, 176, 246, 0.7);
   border-radius:0.5em;
   z-index:4
@@ -559,11 +560,9 @@ function keyboard (div, input) {
       menu.appendChild(el)
     }
 
-    menu.style = 'position:absolute'
     const rect = this.getClientRects()[0]
-    menu.style.left = rect.left - rect.width + 'px'
-    menu.style.top = rect.top + rect.height + 'px'
-
+    menu.style.left = window.scrollX + rect.left - rect.width + 'px'
+    menu.style.top = window.scrollY + rect.top + rect.height + 'px'
     menu.className = 'menu'
     this.appendChild(menu)
 
