@@ -136,6 +136,7 @@ button:hover{
 }
 </style>
 <script>
+/* global Event */
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', main)
@@ -165,12 +166,11 @@ function collapsable (name) {
   const container = document.getElementById('container_' + name)
   const controls = document.getElementById('controls_' + name)
 
-  const toggle = function toggle() {
+  const toggle = function toggle () {
     if (checkbox.checked) {
       controls.style.display = 'none'
       container.style.display = 'block'
-    }
-    else {
+    } else {
       controls.style.display = 'block'
       container.style.display = 'none'
     }
@@ -186,12 +186,12 @@ function addCopyToClipboard (name) {
     input.focus()
     input.select()
     const r = document.execCommand('copy')
-    if(r) {
+    if (r) {
       button.innerHTML = 'Copied!'
     } else {
       button.innerHTML = 'Not supported on this browser!'
     }
-    window.setTimeout(function() { button.innerHTML = 'Copy'}, 2000)
+    window.setTimeout(function restoreButtonTitle() { button.innerHTML = 'Copy' }, 2000)
   })
 }
 function transliterate (ev) {
@@ -244,57 +244,57 @@ function isVowelNotY (char) {
 
 const map = {
 
-  'أ': '2',
-  'إ': '2',
-  'آ': '2aa',
-  'ء': '2',
-  'ٱ': 'ʾ',
-  'ك': 'k',
-  'گ': 'g',
-  'ݣ': 'g',
-  'ب': 'b',
-  'پ': 'p',
-  'و': '@w',
-  'ؤ': 'u2',
-  'ه': 'h',
-  'د': 'd',
-  'ذ': 'dh',
-  'ر': 'r',
-  'ز': 'z',
-  'ژ': 'dz',
-  'ا': 'aa',
-  'ل': 'l',
-  'ج': 'j',
-  'چ' : 'tj',
-  'خ': 'kh',
-  'ح': '7',
-  'م': 'm',
-  'ن': 'n',
-  'ت': 't',
-  'ث': 'th',
-  'ة': '@t',
-  'ق': 'q',
-  'ڧ': 'q',
-  'ڨ': 'g',
-  'ف': 'f',
-  'ڤ': 'v',
-  'ڢ': 'f',
-  'ڥ': 'v',
-  'س': 's',
-  'ش': 'sh',
-  'ڜ': 'tj',
-  'ع': '3',
-  'غ': 'gh',
-  'ظ': 'dh',
-  'ط': 't',
-  'ي': '@y',
-  'ض': 'dh',
-  'ص': 's',
-  'ى': 'a',
-  'ئ': '2',
+  أ: '2',
+  إ: '2',
+  آ: '2aa',
+  ء: '2',
+  ٱ: 'ʾ',
+  ك: 'k',
+  گ: 'g',
+  ݣ: 'g',
+  ب: 'b',
+  پ: 'p',
+  و: '@w',
+  ؤ: 'u2',
+  ه: 'h',
+  د: 'd',
+  ذ: 'dh',
+  ر: 'r',
+  ز: 'z',
+  ژ: 'dz',
+  ا: 'aa',
+  ل: 'l',
+  ج: 'j',
+  چ: 'tj',
+  خ: 'kh',
+  ح: '7',
+  م: 'm',
+  ن: 'n',
+  ت: 't',
+  ث: 'th',
+  ة: '@t',
+  ق: 'q',
+  ڧ: 'q',
+  ڨ: 'g',
+  ف: 'f',
+  ڤ: 'v',
+  ڢ: 'f',
+  ڥ: 'v',
+  س: 's',
+  ش: 'sh',
+  ڜ: 'tj',
+  ع: '3',
+  غ: 'gh',
+  ظ: 'dh',
+  ط: 't',
+  ي: '@y',
+  ض: 'dh',
+  ص: 's',
+  ى: 'a',
+  ئ: '2',
 
   '؟': '?',
-  'ـ': '',
+  ـ: '',
   '،': ',',
   '؛': ';',
 
@@ -306,8 +306,8 @@ const map = {
   '\u0652': '',
   '\u0651': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    if(isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] == '@') {
-      return textLa.slice(0,textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+    if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+      return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
     } else {
       return textLa + textLa[textLa.length - 1]
     }
@@ -318,7 +318,7 @@ const map = {
   '\u0670': 'ā',
   '\u0653': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    return textLa.slice(0,textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
+    return textLa.slice(0, textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
   },
   '٠': '0',
   '١': '1',
@@ -363,57 +363,57 @@ const post = {
 
 const mapIpa = {
 
-  'أ': 'ʔ',
-  'إ': 'ʔ',
-  'آ': 'ʔaː',
-  'ء': 'ʔ',
-  'ٱ': 'ʾ',
-  'ك': 'k',
-  'گ': 'g',
-  'ݣ': 'g',
-  'ب': 'b',
-  'پ': 'p',
-  'و': '@w',
-  'ؤ': 'uʔ',
-  'ه': 'h',
-  'د': 'd',
-  'ذ': 'ð',
-  'ر': 'r',
-  'ز': 'z',
-  'ژ': 'dz',
-  'ا': 'aː',
-  'ل': 'l',
-  'ج': 'd͡ʒ',
-  'چ' : 'ʒ',
-  'خ': 'x',
-  'ح': 'ħ',
-  'م': 'm',
-  'ن': 'n',
-  'ت': 't',
-  'ث': 'θ',
-  'ة': '@t',
-  'ق': 'q',
-  'ڧ': 'q',
-  'ڨ': 'g',
-  'ف': 'f',
-  'ڤ': 'v',
-  'ڢ': 'f',
-  'ڥ': 'v',
-  'س': 's',
-  'ش': 'ʃ',
-  'ڜ': 't͡ʃ',
-  'ع': 'ʕ',
-  'غ': 'ɣ',
-  'ظ': 'ðˤ',
-  'ط': 'tˤ',
-  'ي': '@y',
-  'ض': 'dˤ',
-  'ص': 'sˤ',
-  'ى': 'a',
-  'ئ': 'ʔ',
+  أ: 'ʔ',
+  إ: 'ʔ',
+  آ: 'ʔaː',
+  ء: 'ʔ',
+  ٱ: 'ʾ',
+  ك: 'k',
+  گ: 'g',
+  ݣ: 'g',
+  ب: 'b',
+  پ: 'p',
+  و: '@w',
+  ؤ: 'uʔ',
+  ه: 'h',
+  د: 'd',
+  ذ: 'ð',
+  ر: 'r',
+  ز: 'z',
+  ژ: 'dz',
+  ا: 'aː',
+  ل: 'l',
+  ج: 'd͡ʒ',
+  چ: 'ʒ',
+  خ: 'x',
+  ح: 'ħ',
+  م: 'm',
+  ن: 'n',
+  ت: 't',
+  ث: 'θ',
+  ة: '@t',
+  ق: 'q',
+  ڧ: 'q',
+  ڨ: 'g',
+  ف: 'f',
+  ڤ: 'v',
+  ڢ: 'f',
+  ڥ: 'v',
+  س: 's',
+  ش: 'ʃ',
+  ڜ: 't͡ʃ',
+  ع: 'ʕ',
+  غ: 'ɣ',
+  ظ: 'ðˤ',
+  ط: 'tˤ',
+  ي: '@y',
+  ض: 'dˤ',
+  ص: 'sˤ',
+  ى: 'a',
+  ئ: 'ʔ',
 
   '؟': '?',
-  'ـ': '',
+  ـ: '',
   '،': ',',
   '؛': ';',
 
@@ -425,11 +425,11 @@ const mapIpa = {
   '\u0652': '',
   '\u0651': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    if(isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] == '@') {
-      if(isVowelNotY(textLa[textLa.length - 2])) {
-        return textLa.slice(0,textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
+    if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+      if (isVowelNotY(textLa[textLa.length - 2])) {
+        return textLa.slice(0, textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
       } else {
-        return textLa.slice(0,textLa.length - 1) + '.' + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+        return textLa.slice(0, textLa.length - 1) + '.' + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
       }
     } else {
       return textLa + 'ː'
@@ -441,7 +441,7 @@ const mapIpa = {
   '\u0670': 'ā',
   '\u0653': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    return textLa.slice(0,textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
+    return textLa.slice(0, textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
   },
   '٠': '0',
   '١': '1',
@@ -486,57 +486,57 @@ const postIpa = {
 
 const mapWiki = {
 
-  'أ': 'ʾ',
-  'إ': 'ʾ',
-  'آ': 'ʾā',
-  'ء': 'ʾ',
-  'ٱ': 'ʾ',
-  'ك': 'k',
-  'گ': 'g',
-  'ݣ': 'g',
-  'ب': 'b',
-  'پ': 'p',
-  'و': '@w',
-  'ؤ': 'uʾ',
-  'ه': 'h',
-  'د': 'd',
-  'ذ': 'ḏ',
-  'ر': 'r',
-  'ز': 'z',
-  'ژ': 'dz',
-  'ا': 'ā',
-  'ل': 'l',
-  'ج': 'j',
-  'چ': 'č',
-  'خ': 'ḵ',
-  'ح': 'ḥ',
-  'م': 'm',
-  'ن': 'n',
-  'ت': 't',
-  'ث': 'ṯ',
-  'ة': '@t',
-  'ق': 'q',
-  'ڧ': 'q',
-  'ڨ': 'g',
-  'ف': 'f',
-  'ڤ': 'v',
-  'ڢ': 'f',
-  'ڥ': 'v',
-  'س': 's',
-  'ش': 'š',
-  'ڜ': 'tš',
-  'ع': 'ʿ',
-  'غ': 'ḡ',
-  'ظ': 'ẓ',
-  'ط': 'ṭ',
-  'ي': '@y',
-  'ض': 'ḍ',
-  'ص': 'ṣ',
-  'ى': 'a',
-  'ئ': 'ʿ',
+  أ: 'ʾ',
+  إ: 'ʾ',
+  آ: 'ʾā',
+  ء: 'ʾ',
+  ٱ: 'ʾ',
+  ك: 'k',
+  گ: 'g',
+  ݣ: 'g',
+  ب: 'b',
+  پ: 'p',
+  و: '@w',
+  ؤ: 'uʾ',
+  ه: 'h',
+  د: 'd',
+  ذ: 'ḏ',
+  ر: 'r',
+  ز: 'z',
+  ژ: 'dz',
+  ا: 'ā',
+  ل: 'l',
+  ج: 'j',
+  چ: 'č',
+  خ: 'ḵ',
+  ح: 'ḥ',
+  م: 'm',
+  ن: 'n',
+  ت: 't',
+  ث: 'ṯ',
+  ة: '@t',
+  ق: 'q',
+  ڧ: 'q',
+  ڨ: 'g',
+  ف: 'f',
+  ڤ: 'v',
+  ڢ: 'f',
+  ڥ: 'v',
+  س: 's',
+  ش: 'š',
+  ڜ: 'tš',
+  ع: 'ʿ',
+  غ: 'ḡ',
+  ظ: 'ẓ',
+  ط: 'ṭ',
+  ي: '@y',
+  ض: 'ḍ',
+  ص: 'ṣ',
+  ى: 'a',
+  ئ: 'ʿ',
 
   '؟': '?',
-  'ـ': '',
+  ـ: '',
   '،': ',',
   '؛': ';',
 
@@ -548,8 +548,8 @@ const mapWiki = {
   '\u0652': '',
   '\u0651': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    if(isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] == '@') {
-      return textLa.slice(0,textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+    if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+      return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
     } else {
       return textLa + textLa[textLa.length - 1]
     }
@@ -560,7 +560,7 @@ const mapWiki = {
   '\u0670': 'ā',
   '\u0653': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    return textLa.slice(0,textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
+    return textLa.slice(0, textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
   },
   '٠': '0',
   '١': '1',
@@ -601,17 +601,17 @@ const postWiki = {
       return replaceCharsAt(textLa, index, 2, 't')
     }
   },
-  'aa': 'ā',
-  'ii': 'ī',
-  'uu': 'ū',
-  'ee': 'ē',
-  'oo': 'ō'
+  aa: 'ā',
+  ii: 'ī',
+  uu: 'ū',
+  ee: 'ē',
+  oo: 'ō'
 }
 
 function ar2la (textAr, map, post) {
   const logPre = document.getElementById('log')
   logPre.innerHTML = ''
-  let log = function (text) {
+  const log = function (text) {
     if (!log.firstChild) {
       logPre.style.padding = '0.5em'
       logPre.appendChild(document.createTextNode('Errors:\n'))
@@ -664,7 +664,7 @@ function keyboard (div, input) {
     this.str = str
     this.fct = false
   }
-  function FuncKey(name, fct) {
+  function FuncKey (name, fct) {
     Key.call(this, name, false)
     this.fct = FuncKey.staticFunctions.length
     FuncKey.staticFunctions.push(fct)
@@ -687,22 +687,22 @@ function keyboard (div, input) {
       '٨',
       '٩',
       '٠',
-      new FuncKey('\u27F5', function backspace(ev) {
-        if(this.selectionStart == this.selectionEnd) {
+      new FuncKey('\u27F5', function backspace (ev) {
+        if (this.selectionStart === this.selectionEnd) {
           this.value = this.value.substr(0, this.selectionStart - 1) + this.value.substr(this.selectionStart)
         } else {
           this.value = this.value.substr(0, this.selectionStart) + this.value.substr(this.selectionEnd)
         }
         fireChange(this)
       }),
-      new FuncKey('\u21B6', function undo(ev) {
-        if(stack.length > 0) {
+      new FuncKey('\u21B6', function undo (ev) {
+        if (stack.length > 0) {
           this.value = stack.pop()
           this.dispatchEvent(new Event('change'))
         }
-      }),
+      })
 
-      ],
+    ],
     [
       'ص',
       'ض',
@@ -784,11 +784,11 @@ function keyboard (div, input) {
   ]
 
   const fireChange = function fireChange (el) {
-    if(el.value !== stack[stack.length - 1]) {
+    if (el.value !== stack[stack.length - 1]) {
       stack.push(el.value)
     }
-    if(stack.length > 1000) {
-      stack = stack.slice(500)
+    if (stack.length > 1000) {
+      stack.splice(0, 500)
     }
     el.dispatchEvent(new Event('change'))
   }
@@ -816,12 +816,12 @@ function keyboard (div, input) {
   const mouseoverMenu = function mouseoverMenu (ev) {
     const el = this
     clearTimeout(parseInt(el.dataset.timeOutOut))
-    el.dataset.timeOutOver = window.setTimeout(function () { showMenu.call(el, ev) }, 750)
+    el.dataset.timeOutOver = window.setTimeout(function showMenuCaller () { showMenu.call(el, ev) }, 750)
   }
   const mouseoutMenu = function mouseoutMenu (ev) {
     const el = this
     clearTimeout(parseInt(el.dataset.timeOutOver))
-    el.dataset.timeOutOut = window.setTimeout(function () { hideMenu.call(el, ev) }, 1500)
+    el.dataset.timeOutOut = window.setTimeout(function hideMenuCaller () { hideMenu.call(el, ev) }, 1500)
   }
   const showMenu = function showMenu (ev) {
     if (this.dataset.menuopen) {
@@ -837,7 +837,7 @@ function keyboard (div, input) {
     const arr = JSON.parse(this.dataset.menu)
 
     for (let i = 0; i < arr.length; i++) {
-      if(i % 4 == 0 && i > 0) {
+      if (i % 4 === 0 && i > 0) {
         menu.appendChild(document.createElement('br'))
       }
       const el = makeButton(arr[i])
@@ -850,7 +850,7 @@ function keyboard (div, input) {
     menu.className = 'menu'
     this.appendChild(menu)
 
-    while(window.innerWidth < parseInt(menu.style.left) + menu.clientWidth) {
+    while (window.innerWidth < parseInt(menu.style.left) + menu.clientWidth) {
       menu.style.left = parseInt(menu.style.left) - 5 + 'px'
     }
   }
@@ -876,7 +876,7 @@ function keyboard (div, input) {
   }
   const functionOnClick = function execFunctionOnClick (el, fct) {
     el.dataset.fct = fct
-    el.addEventListener('click', function(ev) {
+    el.addEventListener('click', function (ev) {
       FuncKey.staticFunctions[this.dataset.fct].call(input, ev, this)
     })
   }
