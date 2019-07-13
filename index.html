@@ -148,9 +148,14 @@ function main (ev) {
   inputAr.addEventListener('keyup', transliterate)
   inputAr.addEventListener('click', transliterate)
   inputAr.addEventListener('change', transliterate)
+
   keyboard(document.getElementById('keyboard'), inputAr)
-  copy_la.addEventListener('click', copyLaToClipboard)
-  copy_ar.addEventListener('click', copyArToClipboard)
+
+  addCopyToClipboard('ar')
+  addCopyToClipboard('la')
+  addCopyToClipboard('ipa')
+  addCopyToClipboard('wiki')
+
   collapsable('ipa')
   collapsable('wiki')
 }
@@ -160,7 +165,7 @@ function collapsable (name) {
   const container = document.getElementById('container_' + name)
   const controls = document.getElementById('controls_' + name)
 
-  const toggle = function() {
+  const toggle = function toggle() {
     if (checkbox.checked) {
       controls.style.display = 'none'
       container.style.display = 'block'
@@ -174,33 +179,21 @@ function collapsable (name) {
   checkbox.addEventListener('change', toggle)
   toggle()
 }
-function copyArToClipboard(ev) {
-  const button = this
-  const inputAr = document.getElementById('text_ar')
-  inputAr.focus()
-  inputAr.select()
-  const r = document.execCommand('copy')
-  if(r) {
-    this.innerHTML = 'Copied!'
-  } else {
-    this.innerHTML = 'Not supported on this browser!'
-  }
-  window.setTimeout(function() { button.innerHTML = 'Copy'}, 2000)
+function addCopyToClipboard (name) {
+  const button = document.getElementById('copy_' + name)
+  const input = document.getElementById('text_' + name)
+  button.addEventListener('click', function copyToClipboard (ev) {
+    input.focus()
+    input.select()
+    const r = document.execCommand('copy')
+    if(r) {
+      button.innerHTML = 'Copied!'
+    } else {
+      button.innerHTML = 'Not supported on this browser!'
+    }
+    window.setTimeout(function() { button.innerHTML = 'Copy'}, 2000)
+  })
 }
-function copyLaToClipboard(ev) {
-  const button = this
-  const inputLa = document.getElementById('text_la')
-  inputLa.focus()
-  inputLa.select()
-  const r = document.execCommand('copy')
-  if(r) {
-    this.innerHTML = 'Copied!'
-  } else {
-    this.innerHTML = 'Not supported on this browser!'
-  }
-  window.setTimeout(function() { button.innerHTML = 'Copy'}, 2000)
-}
-
 function transliterate (ev) {
   const inputLa = document.getElementById('text_la')
   const inputIpa = document.getElementById('text_ipa')
