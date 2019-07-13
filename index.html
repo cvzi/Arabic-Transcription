@@ -39,6 +39,7 @@ body h1{
   clear:left
 }
 textarea{
+  width:95%;
   font-family:serif;
   color:#3c3c3c;
   background-color:#f7f7f7;
@@ -48,13 +49,17 @@ textarea{
   resize:vertical;
 }
 #text_ar{
-  width:95%;
   font-size:180%
 }
 #text_la{
   font-family:sans-serif;
-  width:95%;
   font-size:110%
+}
+#text_ipa{
+  font-family:sans-serif;
+}
+#text_wiki{
+  font-family:sans-serif;
 }
 #log{
   font-size:170%;
@@ -146,9 +151,29 @@ function main (ev) {
   keyboard(document.getElementById('keyboard'), inputAr)
   copy_la.addEventListener('click', copyLaToClipboard)
   copy_ar.addEventListener('click', copyArToClipboard)
+  collapsable('ipa')
+  collapsable('wiki')
 }
 
+function collapsable (name) {
+  const checkbox = document.getElementById('enable_' + name)
+  const container = document.getElementById('container_' + name)
+  const controls = document.getElementById('controls_' + name)
 
+  const toggle = function() {
+    if (checkbox.checked) {
+      controls.style.display = 'none'
+      container.style.display = 'block'
+    }
+    else {
+      controls.style.display = 'block'
+      container.style.display = 'none'
+    }
+    document.getElementById('text_ar').dispatchEvent(new Event('change'))
+  }
+  checkbox.addEventListener('change', toggle)
+  toggle()
+}
 function copyArToClipboard(ev) {
   const button = this
   const inputAr = document.getElementById('text_ar')
@@ -178,12 +203,18 @@ function copyLaToClipboard(ev) {
 
 function transliterate (ev) {
   const inputLa = document.getElementById('text_la')
+  const inputIpa = document.getElementById('text_ipa')
+  const inputWiki = document.getElementById('text_wiki')
   const textAr = document.getElementById('text_ar').value
 
   if (textAr.trim().length > 0) {
-    inputLa.value = ar2la(textAr)
+    inputLa.value = ar2la(textAr, map, post)
+    inputIpa.value = ar2la(textAr, mapIpa, postIpa)
+    inputWiki.value = ar2la(textAr, mapWiki, postWiki)
   } else {
     inputLa.value = ''
+    inputIpa.value = ''
+    inputWiki.value = ''
   }
 }
 
@@ -211,14 +242,18 @@ function isNextToVowel (text, index, len) {
 }
 
 function isVowel (char) {
-  return 'aeiouyā'.indexOf(char) !== -1
+  return 'aeiouyāīūēō'.indexOf(char) !== -1
+}
+
+function isVowelNotY (char) {
+  return char !== 'y' && isVowel(char)
 }
 
 const map = {
 
   'أ': '2',
   'إ': '2',
-  'آ': '2',
+  'آ': '2aa',
   'ء': '2',
   'ٱ': 'ʾ',
   'ك': 'k',
@@ -246,10 +281,15 @@ const map = {
   'ث': 'th',
   'ة': '@t',
   'ق': 'q',
+  'ڧ': 'q',
   'ڨ': 'g',
   'ف': 'f',
+  'ڤ': 'v',
+  'ڢ': 'f',
+  'ڥ': 'v',
   'س': 's',
   'ش': 'sh',
+  'ڜ': 'tj',
   'ع': '3',
   'غ': 'gh',
   'ظ': 'dh',
@@ -273,7 +313,11 @@ const map = {
   '\u0652': '',
   '\u0651': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    return textLa + textLa[textLa.length - 1]
+    if(isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] == '@') {
+      return textLa.slice(0,textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+    } else {
+      return textLa + textLa[textLa.length - 1]
+    }
   },
   '\u064C': '-un',
   '\u064D': '-in',
@@ -281,7 +325,7 @@ const map = {
   '\u0670': 'ā',
   '\u0653': function (textAr, textLa, index) {
     // Shadda, consonant doubling
-    return textLa.slice(0,textLa.length - 2) + 'ʾ' + textLa[textLa.length - 1]
+    return textLa.slice(0,textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
   },
   '٠': '0',
   '١': '1',
@@ -315,16 +359,263 @@ const post = {
   },
   '@t': function (textLa, index) {
     // ة at the end of a word is a 'h', else 't'
-    const whitespace = /\s/
+    const whitespace = /\s|$/
     if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
-      return replaceCharsAt(textLa, index, 2, 'h')
+      return replaceCharsAt(textLa, index, 2, '')
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
   }
 }
 
-function ar2la (textAr) {
+const mapIpa = {
+
+  'أ': 'ʔ',
+  'إ': 'ʔ',
+  'آ': 'ʔaː',
+  'ء': 'ʔ',
+  'ٱ': 'ʾ',
+  'ك': 'k',
+  'گ': 'g',
+  'ݣ': 'g',
+  'ب': 'b',
+  'پ': 'p',
+  'و': '@w',
+  'ؤ': 'uʔ',
+  'ه': 'h',
+  'د': 'd',
+  'ذ': 'ð',
+  'ر': 'r',
+  'ز': 'z',
+  'ژ': 'dz',
+  'ا': 'aː',
+  'ل': 'l',
+  'ج': 'd͡ʒ',
+  'چ' : 'ʒ',
+  'خ': 'x',
+  'ح': 'ħ',
+  'م': 'm',
+  'ن': 'n',
+  'ت': 't',
+  'ث': 'θ',
+  'ة': '@t',
+  'ق': 'q',
+  'ڧ': 'q',
+  'ڨ': 'g',
+  'ف': 'f',
+  'ڤ': 'v',
+  'ڢ': 'f',
+  'ڥ': 'v',
+  'س': 's',
+  'ش': 'ʃ',
+  'ڜ': 't͡ʃ',
+  'ع': 'ʕ',
+  'غ': 'ɣ',
+  'ظ': 'ðˤ',
+  'ط': 'tˤ',
+  'ي': '@y',
+  'ض': 'dˤ',
+  'ص': 'sˤ',
+  'ى': 'a',
+  'ئ': 'ʔ',
+
+  '؟': '?',
+  'ـ': '',
+  '،': ',',
+  '؛': ';',
+
+  '﷼': 'rial',
+
+  '\u064F': 'u',
+  '\u064E': 'a',
+  '\u0650': 'i',
+  '\u0652': '',
+  '\u0651': function (textAr, textLa, index) {
+    // Shadda, consonant doubling
+    if(isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] == '@') {
+      if(isVowelNotY(textLa[textLa.length - 2])) {
+        return textLa.slice(0,textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
+      } else {
+        return textLa.slice(0,textLa.length - 1) + '.' + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+      }
+    } else {
+      return textLa + 'ː'
+    }
+  },
+  '\u064C': '-un',
+  '\u064D': '-in',
+  '\u064B': '-an',
+  '\u0670': 'ā',
+  '\u0653': function (textAr, textLa, index) {
+    // Shadda, consonant doubling
+    return textLa.slice(0,textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
+  },
+  '٠': '0',
+  '١': '1',
+  '٢': '2',
+  '٣': '3',
+  '٤': '4',
+  '٥': '5',
+  '٦': '6',
+  '٧': '7',
+  '٨': '8',
+  '٩': '9',
+  '٬': ',',
+  '٫': '.',
+  '٪': '%'
+}
+
+const postIpa = {
+  '@y': function (textLa, index) {
+    if (isNextToVowel(textLa, index, 2)) {
+      return replaceCharsAt(textLa, index, 2, 'j')
+    } else {
+      return replaceCharsAt(textLa, index, 2, 'iː')
+    }
+  },
+  '@w': function (textLa, index) {
+    if (isNextToVowel(textLa, index, 2)) {
+      return replaceCharsAt(textLa, index, 2, 'w')
+    } else {
+      return replaceCharsAt(textLa, index, 2, 'uː')
+    }
+  },
+  '@t': function (textLa, index) {
+    // ة at the end of a word is a 'h', else 't'
+    const whitespace = /\s|$/
+    if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
+      return replaceCharsAt(textLa, index, 2, '')
+    } else {
+      return replaceCharsAt(textLa, index, 2, 't')
+    }
+  }
+}
+
+const mapWiki = {
+
+  'أ': 'ʾ',
+  'إ': 'ʾ',
+  'آ': 'ʾā',
+  'ء': 'ʾ',
+  'ٱ': 'ʾ',
+  'ك': 'k',
+  'گ': 'g',
+  'ݣ': 'g',
+  'ب': 'b',
+  'پ': 'p',
+  'و': '@w',
+  'ؤ': 'uʾ',
+  'ه': 'h',
+  'د': 'd',
+  'ذ': 'ḏ',
+  'ر': 'r',
+  'ز': 'z',
+  'ژ': 'dz',
+  'ا': 'ā',
+  'ل': 'l',
+  'ج': 'j',
+  'چ': 'č',
+  'خ': 'ḵ',
+  'ح': 'ḥ',
+  'م': 'm',
+  'ن': 'n',
+  'ت': 't',
+  'ث': 'ṯ',
+  'ة': '@t',
+  'ق': 'q',
+  'ڧ': 'q',
+  'ڨ': 'g',
+  'ف': 'f',
+  'ڤ': 'v',
+  'ڢ': 'f',
+  'ڥ': 'v',
+  'س': 's',
+  'ش': 'š',
+  'ڜ': 'tš',
+  'ع': 'ʿ',
+  'غ': 'ḡ',
+  'ظ': 'ẓ',
+  'ط': 'ṭ',
+  'ي': '@y',
+  'ض': 'ḍ',
+  'ص': 'ṣ',
+  'ى': 'a',
+  'ئ': 'ʿ',
+
+  '؟': '?',
+  'ـ': '',
+  '،': ',',
+  '؛': ';',
+
+  '﷼': 'rial',
+
+  '\u064F': 'u',
+  '\u064E': 'a',
+  '\u0650': 'i',
+  '\u0652': '',
+  '\u0651': function (textAr, textLa, index) {
+    // Shadda, consonant doubling
+    if(isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] == '@') {
+      return textLa.slice(0,textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+    } else {
+      return textLa + textLa[textLa.length - 1]
+    }
+  },
+  '\u064C': '-un',
+  '\u064D': '-in',
+  '\u064B': '-an',
+  '\u0670': 'ā',
+  '\u0653': function (textAr, textLa, index) {
+    // Shadda, consonant doubling
+    return textLa.slice(0,textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
+  },
+  '٠': '0',
+  '١': '1',
+  '٢': '2',
+  '٣': '3',
+  '٤': '4',
+  '٥': '5',
+  '٦': '6',
+  '٧': '7',
+  '٨': '8',
+  '٩': '9',
+  '٬': ',',
+  '٫': '.',
+  '٪': '%'
+}
+
+const postWiki = {
+  '@y': function (textLa, index) {
+    if (isNextToVowel(textLa, index, 2)) {
+      return replaceCharsAt(textLa, index, 2, 'y')
+    } else {
+      return replaceCharsAt(textLa, index, 2, 'ī')
+    }
+  },
+  '@w': function (textLa, index) {
+    if (isNextToVowel(textLa, index, 2)) {
+      return replaceCharsAt(textLa, index, 2, 'aw')
+    } else {
+      return replaceCharsAt(textLa, index, 2, 'uː')
+    }
+  },
+  '@t': function (textLa, index) {
+    // ة at the end of a word is a 'h', else 't'
+    const whitespace = /\s|$/
+    if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
+      return replaceCharsAt(textLa, index, 2, '')
+    } else {
+      return replaceCharsAt(textLa, index, 2, 't')
+    }
+  },
+  'aa': 'ā',
+  'ii': 'ī',
+  'uu': 'ū',
+  'ee': 'ē',
+  'oo': 'ō'
+}
+
+function ar2la (textAr, map, post) {
   const logPre = document.getElementById('log')
   logPre.innerHTML = ''
   let log = function (text) {
@@ -679,6 +970,38 @@ function keyboard (div, input) {
       <textarea id="text_la" dir="ltr" readonly>‎</textarea>
     </div>
     <br class="cl">
+    <div id="controls_ipa">
+      <input type="checkbox" name="enable_ipa" id="enable_ipa">
+      <label for="enable_ipa">IPA</label>
+    </div>
+    <div id="container_ipa">
+      <div class="column_left">
+        <label class="input_label" for="text_ipa">IPA script:</label>
+        <br>
+        <br>
+        <button id="copy_ipa" title="Copy result to clipboard">Copy</button>
+      </div>
+      <div class="column_right">
+        <textarea id="text_ipa" dir="ltr" readonly>‎</textarea>
+      </div>
+      <br class="cl">
+    </div>
+    <div id="controls_wiki">
+      <input type="checkbox" name="enable_wiki" id="enable_wiki">
+      <label for="enable_wiki">Wiki</label>
+    </div>
+    <div id="container_wiki">
+      <div class="column_left">
+        <label class="input_label" for="text_wiki">Wiki script:</label>
+        <br>
+        <br>
+        <button id="copy_wiki" title="Copy result to clipboard">Copy</button>
+      </div>
+      <div class="column_right">
+        <textarea id="text_wiki" dir="ltr" readonly>‎</textarea>
+      </div>
+      <br class="cl">
+    </div>
     <br>
     <hr>
     <br>
