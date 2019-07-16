@@ -304,7 +304,7 @@ const map = {
   '\u064E': 'a',
   '\u0650': 'i',
   '\u0652': '',
-  '\u0651': function (textAr, textLa, index) {
+  '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
     if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
       return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
@@ -314,9 +314,25 @@ const map = {
   },
   '\u064C': '-un',
   '\u064D': '-in',
-  '\u064B': '-an',
+  '\u064B': function fathatan (textAr, textLa, index) {
+    // If over alif or ta2marbuutha, remove aa or @t, else append after next later
+    if('اة'.indexOf(textAr[index-1]) !== -1) {
+      if (textLa[textLa.length - 3] === 'a') {
+        return textLa.slice(0, textLa.length - 2) + 'n'
+      } else {
+        return textLa.slice(0, textLa.length - 2) + 'an'
+      }
+    } else {
+      textAr[index + 1] = 'n'
+      if (textLa[textLa.length-1] === 'a') {
+        return textLa
+      } else {
+        return textLa + 'a'
+      }
+    }
+  },
   '\u0670': 'ā',
-  '\u0653': function (textAr, textLa, index) {
+  '\u0653': function maddah (textAr, textLa, index) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
   },
@@ -358,7 +374,8 @@ const post = {
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
-  }
+  },
+  '3aaa' : '3aa'
 }
 
 const mapIpa = {
@@ -423,7 +440,7 @@ const mapIpa = {
   '\u064E': 'a',
   '\u0650': 'i',
   '\u0652': '',
-  '\u0651': function (textAr, textLa, index) {
+  '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
     if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
       if (isVowelNotY(textLa[textLa.length - 2])) {
@@ -437,9 +454,25 @@ const mapIpa = {
   },
   '\u064C': '-un',
   '\u064D': '-in',
-  '\u064B': '-an',
+  '\u064B': function fathatan (textAr, textLa, index) {
+    // If over alif or ta2marbuutha, remove aa or @t, else append after next later
+    if('اة'.indexOf(textAr[index-1]) !== -1) {
+      if (textLa[textLa.length - 3] === 'a') {
+        return textLa.slice(0, textLa.length - 2) + 'n'
+      } else {
+        return textLa.slice(0, textLa.length - 2) + 'an'
+      }
+    } else {
+      textAr[index + 1] = 'n'
+      if (textLa[textLa.length-1] === 'a') {
+        return textLa
+      } else {
+        return textLa + 'a'
+      }
+    }
+  },
   '\u0670': 'ā',
-  '\u0653': function (textAr, textLa, index) {
+  '\u0653': function maddah (textAr, textLa, index, lastArCharLen) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
   },
@@ -481,7 +514,8 @@ const postIpa = {
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
-  }
+  },
+  'ʕaaː' : 'ʕaː'
 }
 
 const mapWiki = {
@@ -546,7 +580,7 @@ const mapWiki = {
   '\u064E': 'a',
   '\u0650': 'i',
   '\u0652': '',
-  '\u0651': function (textAr, textLa, index) {
+  '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
     if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
       return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
@@ -556,9 +590,25 @@ const mapWiki = {
   },
   '\u064C': '-un',
   '\u064D': '-in',
-  '\u064B': '-an',
+  '\u064B': function fathatan (textAr, textLa, index) {
+    // If over alif or ta2marbuutha, remove aa or @t, else append after next later
+    if('اة'.indexOf(textAr[index-1]) !== -1) {
+      if (textLa[textLa.length - 3] === 'a') {
+        return textLa.slice(0, textLa.length - 2) + 'n'
+      } else {
+        return textLa.slice(0, textLa.length - 2) + 'an'
+      }
+    } else {
+      textAr[index + 1] = 'n'
+      if (textLa[textLa.length-1] === 'a') {
+        return textLa
+      } else {
+        return textLa + 'a'
+      }
+    }
+  },
   '\u0670': 'ā',
-  '\u0653': function (textAr, textLa, index) {
+  '\u0653': function maddah (textAr, textLa, index) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
   },
@@ -605,7 +655,8 @@ const postWiki = {
   ii: 'ī',
   uu: 'ū',
   ee: 'ē',
-  oo: 'ō'
+  oo: 'ō',
+  'ʿaā': 'ʿā'
 }
 
 function ar2la (textAr, map, post) {
@@ -623,6 +674,7 @@ function ar2la (textAr, map, post) {
   const re = /[^\u0600-\u08FF]/u
 
   let textLa = ''
+  textAr = textAr.split('')  // Arrays are passed by reference, so we can change it in the map() function
 
   for (let i = 0; i < textAr.length; i++) {
     const charAr = textAr[i]
