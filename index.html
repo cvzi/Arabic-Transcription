@@ -61,6 +61,10 @@ textarea{
 #text_wiki{
   font-family:sans-serif;
 }
+#normalized{
+  display:none;
+  font-size:170%
+}
 #log{
   font-size:170%;
   background-color:#ffc1c1;
@@ -138,6 +142,8 @@ button:hover{
 <script>
 /* global Event */
 
+var debug = false
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', main)
 } else {
@@ -146,6 +152,16 @@ if (document.readyState === 'loading') {
 
 function main (ev) {
   const inputAr = document.getElementById('text_ar')
+
+  debug = document.location.hash.indexOf('debug') !== -1
+
+  if (document.location.hash && document.location.hash.indexOf('text=') !== -1) {
+    const textAr = decodeURIComponent(document.location.hash.split('text=')[1].split('&')[0])
+    if (textAr) {
+      inputAr.value = textAr
+    }
+  }
+
   inputAr.addEventListener('keyup', transliterate)
   inputAr.addEventListener('click', transliterate)
   inputAr.addEventListener('change', transliterate)
@@ -159,8 +175,14 @@ function main (ev) {
 
   collapsable('ipa')
   collapsable('wiki')
-}
 
+  if (debug) {
+    showNormalized()
+  }
+}
+function showNormalized () {
+  document.getElementById('normalized').style.display = 'block'
+}
 function collapsable (name) {
   const checkbox = document.getElementById('enable_' + name)
   const container = document.getElementById('container_' + name)
@@ -191,11 +213,11 @@ function addCopyToClipboard (name) {
     } else {
       button.innerHTML = 'Not supported on this browser!'
     }
-    window.setTimeout(function restoreButtonTitle() { button.innerHTML = 'Copy' }, 2000)
+    window.setTimeout(function restoreButtonTitle () { button.innerHTML = 'Copy' }, 2000)
   })
 }
 function resizeTextarea (input, max) {
-  if(input.scrollHeight > input.clientHeight) {
+  if (input.scrollHeight > input.clientHeight) {
     input.style.height = Math.min(input.scrollHeight, max) + 'px'
   }
 }
@@ -205,6 +227,8 @@ function transliterate (ev) {
   const inputIpa = document.getElementById('text_ipa')
   const inputWiki = document.getElementById('text_wiki')
   const textAr = inputAr.value
+
+  document.location.hash = '#' + (debug ? 'debug&' : '') + 'text=' + encodeURIComponent(textAr)
 
   if (textAr.trim().length > 0) {
     inputLa.value = ar2la(textAr, map, post)
@@ -222,21 +246,40 @@ function transliterate (ev) {
   resizeTextarea(inputWiki, 200)
 }
 
+function hex (i, padd) {
+  padd = typeof padd === 'undefined' ? 4 : padd
+  i = i.toString(16)
+  return 'U' + '0'.repeat(padd - i.length) + i.toUpperCase()
+}
+
 function replaceCharsAt (text, index, len, repl) {
   return text.slice(0, index) + repl + text.slice(index + len)
 }
 
 function hasVowelBefore (text, index) {
-  if (index > 0 && isVowel(text[index - 1])) {
-    return true
+  if (index > 0) {
+    if (text[index - 1] === 'ː' || text[index - 1] === '.') {
+      return isVowel(text[index - 2])
+    } else if (isVowel(text[index - 1])) {
+      return true
+    }
   }
   return false
 }
 
 function hasVowelAfter (text, index, len) {
   const pos = len + index
-  if (text.length >= pos && isVowel(text[pos])) {
-    return true
+  if (text.length >= pos) {
+    if (isVowel(text[pos])) {
+      return true
+    }
+    if (text[pos] === '.') {
+      if (text[pos + 1] === '@') {
+        return text[pos + 2] === 'y'
+      } else {
+        return isVowel(text[pos + 1])
+      }
+    }
   }
   return false
 }
@@ -254,7 +297,7 @@ function isVowelNotY (char) {
 }
 function tanwin (vowel, textAr, textLa, index) {
   // If over alif or ta2marbuutha, remove aa or @t, else append after next later
-  if('اة'.indexOf(textAr[index-1]) !== -1) {
+  if ('اة'.indexOf(textAr[index - 1]) !== -1) {
     if (textLa[textLa.length - 3] === vowel) {
       return textLa.slice(0, textLa.length - 2) + 'n'
     } else {
@@ -262,7 +305,7 @@ function tanwin (vowel, textAr, textLa, index) {
     }
   } else {
     textAr[index + 1] = 'n'
-    if (textLa[textLa.length-1] === vowel) {
+    if (textLa[textLa.length - 1] === vowel) {
       return textLa
     } else {
       return textLa + vowel
@@ -334,7 +377,15 @@ const map = {
   '\u0652': '',
   '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
-    if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+    if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
+      // if last char was a vowel diacritic -> double letter before diacritic
+      if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
+        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+      } else {
+        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+      }
+    } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+      // if @
       return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
     } else {
       return textLa + textLa[textLa.length - 1]
@@ -349,10 +400,28 @@ const map = {
   '\u064D': function kasrataan (textAr, textLa, index) {
     return tanwin('i', textAr, textLa, index)
   },
-  '\u0670': 'ā',
+  '\u0670': 'aa',
   '\u0653': function maddah (textAr, textLa, index) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
+  },
+  '\u0654': function hamzaAbove (textAr, textLa, index) {
+    // Hamza above
+    if (['ا', 'ى', 'و'].includes(textAr[index - 2])) {
+      return textLa.slice(0, textLa.length - 3) + '2' + textLa[textLa.length - 1]
+    } else if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+      return textLa.slice(0, textLa.length - 2) + '2'
+    }
+    return textLa + '2a'
+  },
+  '\u0655': function hamzaBelow (textAr, textLa, index) {
+    // Hamza below
+    if (['ا', 'ى', 'و'].includes(textAr[index - 2])) {
+      return textLa.slice(0, textLa.length - 3) + '2' + textLa[textLa.length - 1]
+    } else if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+      return textLa.slice(0, textLa.length - 2) + '2'
+    }
+    return textLa + '2i'
   },
   '٠': '0',
   '١': '1',
@@ -393,7 +462,7 @@ const post = {
       return replaceCharsAt(textLa, index, 2, 't')
     }
   },
-  '3aaa' : '3aa'
+  '3aaa': '3aa'
 }
 
 const mapIpa = {
@@ -460,7 +529,19 @@ const mapIpa = {
   '\u0652': '',
   '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
-    if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+    if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
+      // if last char was a vowel diacritic -> double letter before diacritic
+      if (textLa[textLa.length - 3] === '@') {
+        if (isVowelNotY(textLa[textLa.length - 3])) {
+          return textLa.slice(0, textLa.length - 1) + 'ː' + textLa.slice(textLa.length - 3)
+        } else {
+          return textLa.slice(0, textLa.length - 1) + '.' + textLa.slice(textLa.length - 3)
+        }
+      } else {
+        return textLa.slice(0, textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
+      }
+    } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+      // if @
       if (isVowelNotY(textLa[textLa.length - 2])) {
         return textLa.slice(0, textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
       } else {
@@ -470,6 +551,7 @@ const mapIpa = {
       return textLa + 'ː'
     }
   },
+
   '\u064B': function fathatan (textAr, textLa, index) {
     return tanwin('a', textAr, textLa, index)
   },
@@ -483,6 +565,13 @@ const mapIpa = {
   '\u0653': function maddah (textAr, textLa, index, lastArCharLen) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
+  },
+  '\u0654': function maddah (textAr, textLa, index) {
+    // Hamza above
+    if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+      return textLa.slice(0, textLa.length - 2) + 'ʔ'
+    }
+    return textLa + 'ʔ'
   },
   '٠': '0',
   '١': '1',
@@ -523,7 +612,10 @@ const postIpa = {
       return replaceCharsAt(textLa, index, 2, 't')
     }
   },
-  'ʕaaː' : 'ʕaː'
+  ʕaaː: 'ʕaː',
+  ːː: function (textLa, index) {
+    return replaceCharsAt(textLa, index, 2, 'ː' + textLa[index - 1] + 'ː')
+  }
 }
 
 const mapWiki = {
@@ -590,7 +682,15 @@ const mapWiki = {
   '\u0652': '',
   '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
-    if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+    if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
+      // if last char was a vowel diacritic -> double letter before diacritic
+      if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
+        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+      } else {
+        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+      }
+    } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+      // if @
       return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
     } else {
       return textLa + textLa[textLa.length - 1]
@@ -609,6 +709,13 @@ const mapWiki = {
   '\u0653': function maddah (textAr, textLa, index) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
+  },
+  '\u0654': function maddah (textAr, textLa, index) {
+    // Hamza above
+    if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+      return textLa.slice(0, textLa.length - 2) + 'ʾ'
+    }
+    return textLa + 'ʾ'
   },
   '٠': '0',
   '١': '1',
@@ -654,14 +761,31 @@ const postWiki = {
   uu: 'ū',
   ee: 'ē',
   oo: 'ō',
-  'ʿaā': 'ʿā'
+  ʿaā: 'ʿā'
+}
+
+function normalize (textAr) {
+  const old = textAr
+  textAr = textAr.normalize('NFD')
+  for (let i = 0; i < textAr.length; i++) {
+    if (i + 1 < textAr.length && textAr[i + 1].charCodeAt(0) === 0x0651 && [0x064E, 0x0650, 0x064F].includes(textAr[i].charCodeAt(0))) {
+      // Swap SHADDA with FATHA/KASRA/DAMMA
+      [textAr[i], textAr[i + 1]] = [textAr[i + 1], textAr[i]]
+    }
+  }
+  if (old !== textAr) {
+    document.getElementById('normalized').innerHTML = textAr.split('').map((c) => hex(c.charCodeAt(0))) + '\n' + old.split('').map((c) => hex(c.charCodeAt(0)))
+  } else {
+    document.getElementById('normalized').innerHTML = 'Already NFD'
+  }
+  return textAr
 }
 
 function ar2la (textAr, map, post) {
   const logPre = document.getElementById('log')
   logPre.innerHTML = ''
   const log = function (text) {
-    if (!log.firstChild) {
+    if (!logPre.firstChild) {
       logPre.style.padding = '0.5em'
       logPre.appendChild(document.createTextNode('Errors:\n'))
     }
@@ -671,10 +795,13 @@ function ar2la (textAr, map, post) {
 
   const re = /[^\u0600-\u08FF]/u
 
-  let textLa = ''
-  textAr = textAr.split('')  // Arrays are passed by reference, so we can change it in the map() function
+  textAr = normalize(textAr)
 
+  textAr = textAr.split('') // Arrays are passed by reference, so we can change it in the map() function
+
+  let textLa = ''
   for (let i = 0; i < textAr.length; i++) {
+    let failed = false
     const charAr = textAr[i]
 
     if (charAr in map) {
@@ -687,6 +814,9 @@ function ar2la (textAr, map, post) {
       textLa += charAr
     } else {
       textLa += '#'
+      failed = true
+    }
+    if (debug || failed) {
       log(charAr + '\t' + charAr.charCodeAt(0) + '\t' + escape(charAr).replace('%', '\\'))
     }
   }
@@ -1051,6 +1181,7 @@ function keyboard (div, input) {
     <div id="keyboard"></div>
     <br>
     <hr>
+    <pre id="normalized"></pre>
     <br>
     <pre id="log"></pre>
     <br>
@@ -1073,9 +1204,11 @@ function keyboard (div, input) {
   <hr>
   <div id="attribution">
     <p>
-      License <a href="https://github.com/cvzi/Arabic-Transcription/blob/master/LICENSE">LICENSE</a> (GNU GENERAL PUBLIC LICENSE v3)
-      <br>This site is open source. <a href="https://github.com/cvzi/Arabic-Transcription/edit/master/index.html">Improve this page</a>
-      </p>
+      This site is open source. You can <a href="https://github.com/cvzi/Arabic-Transcription/edit/master/index.html">improve this page</a> or <a href="https://github.com/cvzi/Arabic-Transcription/issues">report a problem</a>.
+    </p>
+    <p>
+      License: GNU GENERAL PUBLIC LICENSE v3 (<a href="https://github.com/cvzi/Arabic-Transcription/blob/master/LICENSE">LICENSE</a>)
+    </p>
   </div>
   </footer>
 
