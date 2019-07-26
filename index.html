@@ -454,10 +454,10 @@ const post = {
     }
   },
   '@t': function (textLa, index) {
-    // ة at the end of a word is a 'h', else 't'
+    // ة at the end of a word is a 'a', else 't'
     const whitespace = /\s|$/
     if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
-      return replaceCharsAt(textLa, index, 2, '')
+      return replaceCharsAt(textLa, index, 2, 'a')
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
@@ -607,7 +607,7 @@ const postIpa = {
     // ة at the end of a word is a 'h', else 't'
     const whitespace = /\s|$/
     if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
-      return replaceCharsAt(textLa, index, 2, '')
+      return replaceCharsAt(textLa, index, 2, 'a')
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
@@ -751,7 +751,7 @@ const postWiki = {
     // ة at the end of a word is a 'h', else 't'
     const whitespace = /\s|$/
     if (textLa.length === index + 3 || textLa.slice(index + 2, index + 3).match(whitespace)) {
-      return replaceCharsAt(textLa, index, 2, '')
+      return replaceCharsAt(textLa, index, 2, 'a')
     } else {
       return replaceCharsAt(textLa, index, 2, 't')
     }
