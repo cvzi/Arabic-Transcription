@@ -462,7 +462,8 @@ const post = {
       return replaceCharsAt(textLa, index, 2, 't')
     }
   },
-  '3aaa': '3aa'
+  '3aaa': '3aa',
+  'aaa': 'a'
 }
 
 const mapIpa = {
@@ -615,7 +616,8 @@ const postIpa = {
   ʕaaː: 'ʕaː',
   ːː: function (textLa, index) {
     return replaceCharsAt(textLa, index, 2, 'ː' + textLa[index - 1] + 'ː')
-  }
+  },
+  aːa: 'a'
 }
 
 const mapWiki = {
@@ -761,7 +763,8 @@ const postWiki = {
   uu: 'ū',
   ee: 'ē',
   oo: 'ō',
-  ʿaā: 'ʿā'
+  ʿaā: 'ʿā',
+  āa: 'a'
 }
 
 function normalize (textAr) {
