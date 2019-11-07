@@ -124,27 +124,27 @@ button:hover{
   border-radius:0.5em;
   z-index:4
 }
-
+</style>
+<style id="max1000px" media="only screen and (max-device-width:1000px)">
 @media only screen and (max-device-width:1000px){
-
-.column_left{
-  clear:left;
-  width:80%
-}
-.column_right{
-  clear:left;
-  width:100%
-}
-#keyboard button{
-  font-size:100%;
-  min-width:1em;
-}
-#keyboard .empty{
-  font-size:150%;
-}
-body article>div:first-child{
-  display:none;
-}
+  .column_left{
+    clear:left;
+    width:80%
+  }
+  .column_right{
+    clear:left;
+    width:100%
+  }
+  #keyboard button{
+    font-size:100%;
+    min-width:1em;
+  }
+  #keyboard .empty{
+    font-size:150%;
+  }
+  body article>div:first-child{
+    display:none;
+  }
 }
 </style>
 <script>
@@ -159,6 +159,12 @@ if (document.readyState === 'loading') {
 }
 
 function main (ev) {
+
+  if (!navigator.userAgent.match(/mobile/i)) {
+    document.getElementsByName('viewport')[0].setAttribute('content', 'user-scalable=yes, maximum-scale=2')
+    document.getElementById('max1000px').remove()
+  }
+
   const inputAr = document.getElementById('text_ar')
 
   debug = document.location.hash.indexOf('debug') !== -1
