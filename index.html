@@ -10,7 +10,7 @@
 <meta name="google-site-verification" content="eiw2h6XyWlPdfKBxgF1rH_fOhLvS48Kb29OwhlfTCHw" />
 <meta name="yandex-verification" content="7e27f0d5db158332" />
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-<link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Josefin+Sans&amp;display=swap" rel="stylesheet">
 <style>
 body{
   font-family:sans-serif;
@@ -26,6 +26,12 @@ body h1{
   border-bottom-right-radius:0.5em 1em;
   padding-right:1em;
   display:inline-block
+}
+body article>div:first-child{
+  font-size:xx-small;
+  padding:0px;
+  margin-top:-20px;
+  padding-bottom:5px;
 }
 .column_left{
   float:left;
@@ -136,7 +142,9 @@ button:hover{
 #keyboard .empty{
   font-size:150%;
 }
-
+body article>div:first-child{
+  display:none;
+}
 }
 </style>
 <script>
@@ -1131,6 +1139,7 @@ function keyboard (div, input) {
   </header>
   <main>
   <article>
+  <div>Transliterate Arabic script to latin characters, supports Arabic chat alphabet Arabish similiar to the Duolingo way, IPA notation and the Wikipedia notation. Offers a virtual keyboard to type in Arabic.</div>
   <div>
     <div class="column_left">
       <label class="input_label" for="text_ar">Arabic script:</label>
@@ -1211,7 +1220,7 @@ function keyboard (div, input) {
 
   <footer>
   <hr>
-  <div id="attribution">
+  <div id="attribution" data-nosnippet>
     <p>
       This site is open source. You can <a href="https://github.com/cvzi/Arabic-Transcription/edit/master/index.html">improve this page</a> or <a href="https://github.com/cvzi/Arabic-Transcription/issues">report a problem</a>.
     </p>
