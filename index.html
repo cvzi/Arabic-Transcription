@@ -704,12 +704,16 @@ const mapWiki = {
     // Shadda, consonant doubling
     if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
       // if last char was a vowel diacritic -> double letter before diacritic
-      if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
+	  if(isVowel(textLa[textLa.length - 2]=='ل'&&isVowel(textLa[textLa.length - 3]=='ا'){
+	    return textLa;
+	  }else if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
         return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
       } else {
         return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
       }
-    } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+    }else if(isVowel(textLa[textLa.length - 1]=='ل'&&isVowel(textLa[textLa.length - 2]=='ا'){
+	  return textLa;
+	} else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
       // if @
       return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
     } else {
