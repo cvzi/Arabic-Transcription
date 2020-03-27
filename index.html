@@ -1,1244 +1,1050 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Transcription of Arabic script according to Duolingo</title>
-<meta name="description" content="Transliteration of Arabic script similiar to Duolingo or the Arabic chat alphabet Arabish. Virtual keyboard for Arabic." />
-<meta name="keywords" content="arabic,arabish,araby,arabizi,transliteration,transcription,romanization,roman,alphabet,letter,character,duolingo,virtual,keyboard">
-<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
-<meta name="msvalidate.01" content="B18D9F539BB866B38C8EE8C2F59CFD53" />
-<meta name="google-site-verification" content="eiw2h6XyWlPdfKBxgF1rH_fOhLvS48Kb29OwhlfTCHw" />
-<meta name="yandex-verification" content="7e27f0d5db158332" />
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-<link href="https://fonts.googleapis.com/css?family=Josefin+Sans&amp;display=swap" rel="stylesheet">
-<style>
-body{
-  font-family:sans-serif;
-  color:black
-}
-hr{
-  border:3px solid #78c800;
-  border-radius:5px
-}
-body h1{
-  font-family:'Josefin Sans', sans-serif;
-  border-bottom:3px solid #78c800;
-  border-bottom-right-radius:0.5em 1em;
-  padding-right:1em;
-  display:inline-block
-}
-body article>div:first-child{
-  font-size:xx-small;
-  padding:0px;
-  margin-top:-20px;
-  padding-bottom:5px;
-}
-.column_left{
-  float:left;
-  width:5%
-}
-.column_right{
-  float:left;
-  width:95%
-}
-.cl {
-  clear:left
-}
-textarea{
-  width:95%;
-  font-family:serif;
-  color:#3c3c3c;
-  background-color:#f7f7f7;
-  border:2px solid #e5e5e5;
-  border-radius:10px;
-  padding:10px 12px;
-  resize:vertical;
-}
-#text_ar{
-  font-size:180%
-}
-#text_la{
-  font-family:sans-serif;
-  font-size:110%
-}
-#text_ipa{
-  font-family:sans-serif;
-}
-#text_wiki{
-  font-family:sans-serif;
-}
-#normalized{
-  display:none;
-  font-size:170%
-}
-#log{
-  font-size:170%;
-  background-color:#ffc1c1;
-  color:#ea2b2b;
-  border-radius:16px
-}
-#keyboard{
-  display:table;
-  margin:auto;
-  background:#1cb0f6;
-  border-radius:16px;
-  color:#fff;
-  text-align:center;
-}
-button{
-  background-color:white;
-  transition:background-color .2s linear;
-  border-width:2px 2px 4px;
-  border-color:#e8e8e8;
-  border-radius:16px;
-  border-style:solid;
-  color:black
-}
-button:hover{
-  background:#eee
-}
-#keyboard button{
-  text-align:center;
-  vertical-align:middle;
-  white-space:nowrap;
-  cursor:pointer;
-  z-index:3;
-  font-size:150%;
-  min-width:2.2em;
-  margin:2px
-}
-#keyboard .empty{
-  font-size:200%;
-  margin:2px
-}
-#keyboard .second{
-  color:gray;
-  font-size:50%;
-  margin:2px;
-  position:absolute;
-  z-index:2
-}
-#keyboard .menu{
-  position:absolute;
-  background-color:rgba(28, 176, 246, 0.7);
-  border-radius:0.5em;
-  z-index:4
-}
-</style>
-<style id="max1000px" media="only screen and (max-device-width:1000px)">
-@media only screen and (max-device-width:1000px){
-  .column_left{
-    clear:left;
-    width:80%
-  }
-  .column_right{
-    clear:left;
-    width:100%
-  }
-  #keyboard button{
-    font-size:100%;
-    min-width:1em;
-  }
-  #keyboard .empty{
-    font-size:150%;
-  }
-  body article>div:first-child{
-    display:none;
-  }
-}
-</style>
-<script>
-/* global Event */
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Transcription of Arabic script according to Duolingo</title>
+    <meta name="description" content="Transliteration of Arabic script similiar to Duolingo or the Arabic chat alphabet Arabish. Virtual keyboard for Arabic." />
+    <meta name="keywords" content="arabic,arabish,araby,arabizi,transliteration,transcription,romanization,roman,alphabet,letter,character,duolingo,virtual,keyboard">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&amp;display=swap" rel="stylesheet">
+    <style>
+        body{
+            font-family:sans-serif;
+            color:black
+        }
+        hr{
+            border:3px solid #78c800;
+            border-radius:5px
+        }
+        body h1{
+            font-family:'Josefin Sans', sans-serif;
+            border-bottom:3px solid #78c800;
+            border-bottom-right-radius:0.5em 1em;
+            padding-right:1em;
+            display:inline-block
+        }
+        body article>div:first-child{
+            font-size:xx-small;
+            padding:0px;
+            margin-top:-20px;
+            padding-bottom:5px;
+        }
+        .column_left{
+            float:left;
+            width:5%
+        }
+        .column_right{
+            float:left;
+            width:95%
+        }
+        .cl {
+            clear:left
+        }
+        textarea{
+            width:95%;
+            font-family:serif;
+            color:#3c3c3c;
+            background-color:#f7f7f7;
+            border:2px solid #e5e5e5;
+            border-radius:10px;
+            padding:10px 12px;
+            resize:vertical;
+        }
+        #text_ar{
+            font-size:180%
+        }
+        #text_wiki{
+            font-family:sans-serif;
+        }
+        #normalized{
+            display:none;
+            font-size:170%
+        }
+        #log{
+            font-size:170%;
+            background-color:#ffc1c1;
+            color:#ea2b2b;
+            border-radius:16px
+        }
+        #keyboard{
+            display:table;
+            margin:auto;
+            background:#1cb0f6;
+            border-radius:16px;
+            color:#fff;
+            text-align:center;
+        }
+        button{
+            background-color:white;
+            transition:background-color .2s linear;
+            border-width:2px 2px 4px;
+            border-color:#e8e8e8;
+            border-radius:16px;
+            border-style:solid;
+            color:black
+        }
+        button:hover{
+            background:#eee
+        }
+        #keyboard button{
+            text-align:center;
+            vertical-align:middle;
+            white-space:nowrap;
+            cursor:pointer;
+            z-index:3;
+            font-size:150%;
+            min-width:2.2em;
+            margin:2px
+        }
+        #keyboard .empty{
+            font-size:200%;
+            margin:2px
+        }
+        #keyboard .second{
+            color:gray;
+            font-size:50%;
+            margin:2px;
+            position:absolute;
+            z-index:2
+        }
+        #keyboard .menu{
+            position:absolute;
+            background-color:rgba(28, 176, 246, 0.7);
+            border-radius:0.5em;
+            z-index:4
+        }
+    </style>
+    <style id="max1000px" media="only screen and (max-device-width:1000px)">
+        @media only screen and (max-device-width:1000px){
+            .column_left{
+                clear:left;
+                width:80%
+            }
+            .column_right{
+                clear:left;
+                width:100%
+            }
+            #keyboard button{
+                font-size:100%;
+                min-width:1em;
+            }
+            #keyboard .empty{
+                font-size:150%;
+            }
+            body article>div:first-child{
+                display:none;
+            }
+        }
+    </style>
+    <script>
+        /* global Event */
 
-var debug = false
+        var debug = false
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', main)
-} else {
-  main()
-}
-
-function main (ev) {
-
-  if (!navigator.userAgent.match(/mobile/i)) {
-    document.getElementsByName('viewport')[0].setAttribute('content', 'user-scalable=yes, maximum-scale=2')
-    document.getElementById('max1000px').remove()
-  }
-
-  const inputAr = document.getElementById('text_ar')
-
-  debug = document.location.hash.indexOf('debug') !== -1
-
-  if (document.location.hash && document.location.hash.indexOf('text=') !== -1) {
-    const textAr = decodeURIComponent(document.location.hash.split('text=')[1].split('&')[0])
-    if (textAr) {
-      inputAr.value = textAr
-    }
-  }
-
-  inputAr.addEventListener('keyup', transliterate)
-  inputAr.addEventListener('click', transliterate)
-  inputAr.addEventListener('change', transliterate)
-
-  keyboard(document.getElementById('keyboard'), inputAr)
-
-  addCopyToClipboard('ar')
-  addCopyToClipboard('la')
-  addCopyToClipboard('ipa')
-  addCopyToClipboard('wiki')
-
-  collapsable('ipa')
-  collapsable('wiki')
-
-  if (debug) {
-    showNormalized()
-  }
-}
-function showNormalized () {
-  document.getElementById('normalized').style.display = 'block'
-}
-function collapsable (name) {
-  const checkbox = document.getElementById('enable_' + name)
-  const container = document.getElementById('container_' + name)
-  const controls = document.getElementById('controls_' + name)
-
-  const toggle = function toggle () {
-    if (checkbox.checked) {
-      controls.style.display = 'none'
-      container.style.display = 'block'
-    } else {
-      controls.style.display = 'block'
-      container.style.display = 'none'
-    }
-    document.getElementById('text_ar').dispatchEvent(new Event('change'))
-  }
-  checkbox.addEventListener('change', toggle)
-  toggle()
-}
-function addCopyToClipboard (name) {
-  const button = document.getElementById('copy_' + name)
-  const input = document.getElementById('text_' + name)
-  button.addEventListener('click', function copyToClipboard (ev) {
-    input.focus()
-    input.select()
-    const r = document.execCommand('copy')
-    if (r) {
-      button.innerHTML = 'Copied!'
-    } else {
-      button.innerHTML = 'Not supported on this browser!'
-    }
-    window.setTimeout(function restoreButtonTitle () { button.innerHTML = 'Copy' }, 2000)
-  })
-}
-function resizeTextarea (input, max) {
-  if (input.scrollHeight > input.clientHeight) {
-    input.style.height = Math.min(input.scrollHeight, max) + 'px'
-  }
-}
-function transliterate (ev) {
-  const inputAr = document.getElementById('text_ar')
-  const inputLa = document.getElementById('text_la')
-  const inputIpa = document.getElementById('text_ipa')
-  const inputWiki = document.getElementById('text_wiki')
-  const textAr = inputAr.value
-
-  document.location.hash = '#' + (debug ? 'debug&' : '') + 'text=' + encodeURIComponent(textAr)
-
-  if (textAr.trim().length > 0) {
-    inputLa.value = ar2la(textAr, map, post)
-    inputIpa.value = ar2la(textAr, mapIpa, postIpa)
-    inputWiki.value = ar2la(textAr, mapWiki, postWiki)
-  } else {
-    inputLa.value = ''
-    inputIpa.value = ''
-    inputWiki.value = ''
-  }
-
-  resizeTextarea(inputAr, 250)
-  resizeTextarea(inputLa, 200)
-  resizeTextarea(inputIpa, 200)
-  resizeTextarea(inputWiki, 200)
-}
-
-function hex (i, padd) {
-  padd = typeof padd === 'undefined' ? 4 : padd
-  i = i.toString(16)
-  return 'U' + '0'.repeat(padd - i.length) + i.toUpperCase()
-}
-
-function replaceCharsAt (text, index, len, repl) {
-  return text.slice(0, index) + repl + text.slice(index + len)
-}
-
-function hasVowelBefore (text, index) {
-  if (index > 0) {
-    if (text[index - 1] === 'ː' || text[index - 1] === '.') {
-      return isVowel(text[index - 2])
-    } else if (isVowel(text[index - 1])) {
-      return true
-    }
-  }
-  return false
-}
-
-function hasVowelAfter (text, index, len) {
-  const pos = len + index
-  if (text.length >= pos) {
-    if (isVowel(text[pos])) {
-      return true
-    }
-    if (text[pos] === '.') {
-      if (text[pos + 1] === '@') {
-        return text[pos + 2] === 'y'
-      } else {
-        return isVowel(text[pos + 1])
-      }
-    }
-  }
-  return false
-}
-
-function isNextToVowel (text, index, len) {
-  return hasVowelBefore(text, index) || hasVowelAfter(text, index, len)
-}
-
-function isVowel (char) {
-  return 'aeiouyāīūēō'.indexOf(char) !== -1
-}
-
-function isVowelNotY (char) {
-  return char !== 'y' && isVowel(char)
-}
-function tanwin (vowel, textAr, textLa, index) {
-  // If over alif or ta2marbuutha, remove aa or @t, else append after next later
-  if ('اة'.indexOf(textAr[index - 1]) !== -1) {
-    if (textLa[textLa.length - 3] === vowel) {
-      return textLa.slice(0, textLa.length - 2) + 'n'
-    } else {
-      return textLa.slice(0, textLa.length - 2) + vowel + 'n'
-    }
-  } else {
-    textAr[index + 1] = 'n'
-    if (textLa[textLa.length - 1] === vowel) {
-      return textLa
-    } else {
-      return textLa + vowel
-    }
-  }
-}
-
-const map = {
-
-  أ: '2',
-  إ: '2',
-  آ: '2aa',
-  ء: '2',
-  ٱ: 'ʾ',
-  ك: 'k',
-  گ: 'g',
-  ݣ: 'g',
-  ب: 'b',
-  پ: 'p',
-  و: '@w',
-  ؤ: 'u2',
-  ه: 'h',
-  د: 'd',
-  ذ: 'dh',
-  ر: 'r',
-  ز: 'z',
-  ژ: 'dz',
-  ا: 'aa',
-  ل: 'l',
-  ج: 'j',
-  چ: 'tj',
-  خ: 'kh',
-  ح: 'H',
-  م: 'm',
-  ن: 'n',
-  ت: 't',
-  ث: 'th',
-  ة: '@t',
-  ق: 'q',
-  ڧ: 'q',
-  ڨ: 'g',
-  ف: 'f',
-  ڤ: 'v',
-  ڢ: 'f',
-  ڥ: 'v',
-  س: 's',
-  ش: 'sh',
-  ڜ: 'tj',
-  ع: '3',
-  غ: 'gh',
-  ظ: 'dh',
-  ط: 'T',
-  ي: '@y',
-  ض: 'dh',
-  ص: 's',
-  ى: 'a',
-  ئ: '2',
-
-  '؟': '?',
-  ـ: '',
-  '،': ',',
-  '؛': ';',
-
-  '﷼': 'rial',
-
-  '\u064F': 'u',
-  '\u064E': 'a',
-  '\u0650': 'i',
-  '\u0652': '',
-  '\u0651': function shadda (textAr, textLa, index) {
-    // Shadda, consonant doubling
-    if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
-      // if last char was a vowel diacritic -> double letter before diacritic
-      if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
-        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-      } else {
-        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-      }
-    } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
-      // if @
-      return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-    } else {
-      return textLa + textLa[textLa.length - 1]
-    }
-  },
-  '\u064B': function fathatan (textAr, textLa, index) {
-    return tanwin('a', textAr, textLa, index)
-  },
-  '\u064C': function dhammataan (textAr, textLa, index) {
-    return tanwin('u', textAr, textLa, index)
-  },
-  '\u064D': function kasrataan (textAr, textLa, index) {
-    return tanwin('i', textAr, textLa, index)
-  },
-  '\u0670': 'aa',
-  '\u0653': function maddah (textAr, textLa, index) {
-    // Shadda, consonant doubling
-    return textLa.slice(0, textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
-  },
-  '\u0654': function hamzaAbove (textAr, textLa, index) {
-    // Hamza above
-    if (['ا', 'ى', 'و'].includes(textAr[index - 2])) {
-      return textLa.slice(0, textLa.length - 3) + '2' + textLa[textLa.length - 1]
-    } else if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
-      return textLa.slice(0, textLa.length - 2) + '2'
-    }
-    return textLa + '2a'
-  },
-  '\u0655': function hamzaBelow (textAr, textLa, index) {
-    // Hamza below
-    if (['ا', 'ى', 'و'].includes(textAr[index - 2])) {
-      return textLa.slice(0, textLa.length - 3) + '2' + textLa[textLa.length - 1]
-    } else if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
-      return textLa.slice(0, textLa.length - 2) + '2'
-    }
-    return textLa + '2i'
-  },
-  '٠': '0',
-  '١': '1',
-  '٢': '2',
-  '٣': '3',
-  '٤': '4',
-  '٥': '5',
-  '٦': '6',
-  '٧': '7',
-  '٨': '8',
-  '٩': '9',
-  '٬': ',',
-  '٫': '.',
-  '٪': '%'
-}
-
-const post = {
-  '@y': function (textLa, index) {
-    if (isNextToVowel(textLa, index, 2)) {
-      return replaceCharsAt(textLa, index, 2, 'y')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 'ii')
-    }
-  },
-  '@w': function (textLa, index) {
-    if (isNextToVowel(textLa, index, 2)) {
-      return replaceCharsAt(textLa, index, 2, 'w')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 'uu')
-    }
-  },
-  '@t': function (textLa, index) {
-    // ة at the end of a word is a 'tan/h', else 't'
-    const whitespace = /\s/
-    if (textLa.slice(index + 2, index + 3) === '.' || textLa.trim().length === index + 2) {
-      return replaceCharsAt(textLa, index, 2, 'h')
-    } else if (textLa.slice(index + 2, index + 3).match(/\s/)) {
-      return replaceCharsAt(textLa, index, 2, 'tan')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 't')
-    }
-  },
-  '3aaa': '3aa',
-  'aaa': 'a'
-}
-
-const mapIpa = {
-
-  أ: 'ʔ',
-  إ: 'ʔ',
-  آ: 'ʔaː',
-  ء: 'ʔ',
-  ٱ: 'ʾ',
-  ك: 'k',
-  گ: 'g',
-  ݣ: 'g',
-  ب: 'b',
-  پ: 'p',
-  و: '@w',
-  ؤ: 'uʔ',
-  ه: 'h',
-  د: 'd',
-  ذ: 'ð',
-  ر: 'r',
-  ز: 'z',
-  ژ: 'dz',
-  ا: 'aː',
-  ل: 'l',
-  ج: 'd͡ʒ',
-  چ: 'ʒ',
-  خ: 'x',
-  ح: 'ħ',
-  م: 'm',
-  ن: 'n',
-  ت: 't',
-  ث: 'θ',
-  ة: '@t',
-  ق: 'q',
-  ڧ: 'q',
-  ڨ: 'g',
-  ف: 'f',
-  ڤ: 'v',
-  ڢ: 'f',
-  ڥ: 'v',
-  س: 's',
-  ش: 'ʃ',
-  ڜ: 't͡ʃ',
-  ع: 'ʕ',
-  غ: 'ɣ',
-  ظ: 'ðˤ',
-  ط: 'tˤ',
-  ي: '@y',
-  ض: 'dˤ',
-  ص: 'sˤ',
-  ى: 'a',
-  ئ: 'ʔ',
-
-  '؟': '?',
-  ـ: '',
-  '،': ',',
-  '؛': ';',
-
-  '﷼': 'rial',
-
-  '\u064F': 'u',
-  '\u064E': 'a',
-  '\u0650': 'i',
-  '\u0652': '',
-  '\u0651': function shadda (textAr, textLa, index) {
-    // Shadda, consonant doubling
-    if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
-      // if last char was a vowel diacritic -> double letter before diacritic
-      if (textLa[textLa.length - 3] === '@') {
-        if (isVowelNotY(textLa[textLa.length - 3])) {
-          return textLa.slice(0, textLa.length - 1) + 'ː' + textLa.slice(textLa.length - 3)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', main)
         } else {
-          return textLa.slice(0, textLa.length - 1) + '.' + textLa.slice(textLa.length - 3)
+            main()
         }
-      } else {
-        return textLa.slice(0, textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
-      }
-    } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
-      // if @
-      if (isVowelNotY(textLa[textLa.length - 2])) {
-        return textLa.slice(0, textLa.length - 1) + 'ː' + textLa[textLa.length - 1]
-      } else {
-        return textLa.slice(0, textLa.length - 1) + '.' + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-      }
-    } else {
-      return textLa + 'ː'
-    }
-  },
 
-  '\u064B': function fathatan (textAr, textLa, index) {
-    return tanwin('a', textAr, textLa, index)
-  },
-  '\u064C': function dhammataan (textAr, textLa, index) {
-    return tanwin('u', textAr, textLa, index)
-  },
-  '\u064D': function kasrataan (textAr, textLa, index) {
-    return tanwin('i', textAr, textLa, index)
-  },
-  '\u0670': 'ā',
-  '\u0653': function maddah (textAr, textLa, index, lastArCharLen) {
-    // Shadda, consonant doubling
-    return textLa.slice(0, textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
-  },
-  '\u0654': function maddah (textAr, textLa, index) {
-    // Hamza above
-    if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
-      return textLa.slice(0, textLa.length - 2) + 'ʔ'
-    }
-    return textLa + 'ʔ'
-  },
-  '٠': '0',
-  '١': '1',
-  '٢': '2',
-  '٣': '3',
-  '٤': '4',
-  '٥': '5',
-  '٦': '6',
-  '٧': '7',
-  '٨': '8',
-  '٩': '9',
-  '٬': ',',
-  '٫': '.',
-  '٪': '%'
-}
+        function main (ev) {
 
-const postIpa = {
-  '@y': function (textLa, index) {
-    if (isNextToVowel(textLa, index, 2)) {
-      return replaceCharsAt(textLa, index, 2, 'j')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 'iː')
-    }
-  },
-  '@w': function (textLa, index) {
-    if (isNextToVowel(textLa, index, 2)) {
-      return replaceCharsAt(textLa, index, 2, 'w')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 'uː')
-    }
-  },
-  '@t': function (textLa, index) {
-    // ة at the end of a word is a 'tan/h', else 't'
-    const whitespace = /\s/
-    if (textLa.slice(index + 2, index + 3) === '.' || textLa.trim().length === index + 2) {
-      return replaceCharsAt(textLa, index, 2, 'h')
-    } else if (textLa.slice(index + 2, index + 3).match(/\s/)) {
-      return replaceCharsAt(textLa, index, 2, 'tan')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 't')
-    }
-  },
-  ʕaaː: 'ʕaː',
-  ːː: function (textLa, index) {
-    return replaceCharsAt(textLa, index, 2, 'ː' + textLa[index - 1] + 'ː')
-  },
-  aːa: 'a'
-}
+            if (!navigator.userAgent.match(/mobile/i)) {
+                document.getElementsByName('viewport')[0].setAttribute('content', 'user-scalable=yes, maximum-scale=2')
+                document.getElementById('max1000px').remove()
+            }
 
-const mapWiki = {
+            const inputAr = document.getElementById('text_ar')
 
-  أ: 'ʾ',
-  إ: 'ʾ',
-  آ: 'ʾā',
-  ء: 'ʾ',
-  ٱ: 'ʾ',
-  ك: 'k',
-  گ: 'g',
-  ݣ: 'g',
-  ب: 'b',
-  پ: 'p',
-  و: '@w',
-  ؤ: 'uʾ',
-  ه: 'h',
-  د: 'd',
-  ذ: 'ḏ',
-  ر: 'r',
-  ز: 'z',
-  ژ: 'dz',
-  ا: 'ā',
-  ل: 'l',
-  ج: 'j',
-  چ: 'č',
-  خ: 'ḵ',
-  ح: 'ḥ',
-  م: 'm',
-  ن: 'n',
-  ت: 't',
-  ث: 'ṯ',
-  ة: '@t',
-  ق: 'q',
-  ڧ: 'q',
-  ڨ: 'g',
-  ف: 'f',
-  ڤ: 'v',
-  ڢ: 'f',
-  ڥ: 'v',
-  س: 's',
-  ش: 'š',
-  ڜ: 'tš',
-  ع: 'ʿ',
-  غ: 'ḡ',
-  ظ: 'ẓ',
-  ط: 'ṭ',
-  ي: '@y',
-  ض: 'ḍ',
-  ص: 'ṣ',
-  ى: 'a',
-  ئ: 'ʿ',
+            debug = document.location.hash.indexOf('debug') !== -1
 
-  '؟': '?',
-  ـ: '',
-  '،': ',',
-  '؛': ';',
+            if (document.location.hash && document.location.hash.indexOf('text=') !== -1) {
+                const textAr = decodeURIComponent(document.location.hash.split('text=')[1].split('&')[0])
+                if (textAr) {
+                    inputAr.value = textAr
+                }
+            }
 
-  '﷼': 'rial',
+            inputAr.addEventListener('keyup', transliterate)
+            inputAr.addEventListener('click', transliterate)
+            inputAr.addEventListener('change', transliterate)
 
-  '\u064F': 'u',
-  '\u064E': 'a',
-  '\u0650': 'i',
-  '\u0652': '',
-  '\u0651': function shadda (textAr, textLa, index) {
-    // Shadda, consonant doubling
-    if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
-      // if last char was a vowel diacritic -> double letter before diacritic
-	  if(isVowel(textLa[textLa.length - 2]=='ل'&&isVowel(textLa[textLa.length - 3]=='ا'){
-	    return textLa;
-	  }else if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
-        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-      } else {
-        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-      }
-    }else if(isVowel(textLa[textLa.length - 1]=='ل'&&isVowel(textLa[textLa.length - 2]=='ا'){
-	  return textLa;
-	} else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
-      // if @
-      return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
-    } else {
-      return textLa + textLa[textLa.length - 1]
-    }
-  },
-  '\u064B': function fathatan (textAr, textLa, index) {
-    return tanwin('a', textAr, textLa, index)
-  },
-  '\u064C': function dhammataan (textAr, textLa, index) {
-    return tanwin('u', textAr, textLa, index)
-  },
-  '\u064D': function kasrataan (textAr, textLa, index) {
-    return tanwin('i', textAr, textLa, index)
-  },
-  '\u0670': 'ā',
-  '\u0653': function maddah (textAr, textLa, index) {
-    // Shadda, consonant doubling
-    return textLa.slice(0, textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
-  },
-  '\u0654': function maddah (textAr, textLa, index) {
-    // Hamza above
-    if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
-      return textLa.slice(0, textLa.length - 2) + 'ʾ'
-    }
-    return textLa + 'ʾ'
-  },
-  '٠': '0',
-  '١': '1',
-  '٢': '2',
-  '٣': '3',
-  '٤': '4',
-  '٥': '5',
-  '٦': '6',
-  '٧': '7',
-  '٨': '8',
-  '٩': '9',
-  '٬': ',',
-  '٫': '.',
-  '٪': '%'
-}
+            keyboard(document.getElementById('keyboard'), inputAr)
 
-const postWiki = {
-  '@y': function (textLa, index) {
-    if (isNextToVowel(textLa, index, 2)) {
-      return replaceCharsAt(textLa, index, 2, 'y')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 'ī')
-    }
-  },
-  '@w': function (textLa, index) {
-    if (isNextToVowel(textLa, index, 2)) {
-      return replaceCharsAt(textLa, index, 2, 'aw')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 'uː')
-    }
-  },
-  '@t': function (textLa, index) {
-    // ة at the end of a word is a 'tan/h', else 't'
-    const whitespace = /\s/
-    if (textLa.slice(index + 2, index + 3) === '.' || textLa.trim().length === index + 2) {
-      return replaceCharsAt(textLa, index, 2, 'h')
-    } else if (textLa.slice(index + 2, index + 3).match(/\s/)) {
-      return replaceCharsAt(textLa, index, 2, 'tan')
-    } else {
-      return replaceCharsAt(textLa, index, 2, 't')
-    }
-  },
-  aa: 'ā',
-  ii: 'ī',
-  uu: 'ū',
-  ee: 'ē',
-  oo: 'ō',
-  ʿaā: 'ʿā',
-  āa: 'a'
-}
+            addCopyToClipboard('ar')
+            addCopyToClipboard('wiki')
 
-function normalize (textAr) {
-  const old = textAr
-  textAr = textAr.normalize('NFD')
-  for (let i = 0; i < textAr.length; i++) {
-    if (i + 1 < textAr.length && textAr[i + 1].charCodeAt(0) === 0x0651 && [0x064E, 0x0650, 0x064F].includes(textAr[i].charCodeAt(0))) {
-      // Swap SHADDA with FATHA/KASRA/DAMMA
-      [textAr[i], textAr[i + 1]] = [textAr[i + 1], textAr[i]]
-    }
-  }
-  if (old !== textAr) {
-    document.getElementById('normalized').innerHTML = textAr.split('').map((c) => hex(c.charCodeAt(0))) + '\n' + old.split('').map((c) => hex(c.charCodeAt(0)))
-  } else {
-    document.getElementById('normalized').innerHTML = 'Already NFD'
-  }
-  return textAr
-}
-
-function ar2la (textAr, map, post) {
-  const logPre = document.getElementById('log')
-  logPre.innerHTML = ''
-  const log = function (text) {
-    if (!logPre.firstChild) {
-      logPre.style.padding = '0.5em'
-      logPre.appendChild(document.createTextNode('Errors:\n'))
-    }
-    logPre.appendChild(document.createTextNode(text))
-    logPre.appendChild(document.createTextNode('\n'))
-  }
-
-  const re = /[^\u0600-\u08FF]/u
-
-  textAr = normalize(textAr)
-
-  textAr = textAr.split('') // Arrays are passed by reference, so we can change it in the map() function
-
-  let textLa = ''
-  for (let i = 0; i < textAr.length; i++) {
-    let failed = false
-    const charAr = textAr[i]
-
-    if (charAr in map) {
-      if (typeof map[charAr] === 'function') {
-        textLa = map[charAr](textAr, textLa, i)
-      } else {
-        textLa += map[charAr]
-      }
-    } else if (charAr.match(re)) {
-      textLa += charAr
-    } else {
-      textLa += '#'
-      failed = true
-    }
-    if (debug || failed) {
-      log(charAr + '\t' + charAr.charCodeAt(0) + '\t' + escape(charAr).replace('%', '\\'))
-    }
-  }
-
-  for (var key in post) {
-    let index = textLa.indexOf(key)
-    if (index !== -1) {
-      if (typeof post[key] === 'function') {
-        while (index !== -1) {
-          textLa = post[key](textLa, index)
-          index = textLa.indexOf(key)
+            if (debug) {
+                showNormalized()
+            }
         }
-      } else {
-        textLa = textLa.replace(key, post[key])
-      }
-    }
-  }
-  return textLa
-}
-
-function keyboard (div, input) {
-  const stack = [input.value]
-  const Key = function (name, str) {
-    this.name = name
-    this.str = str
-    this.fct = false
-  }
-  function FuncKey (name, fct) {
-    Key.call(this, name, false)
-    this.fct = FuncKey.staticFunctions.length
-    FuncKey.staticFunctions.push(fct)
-  }
-  FuncKey.prototype = Object.create(Key.prototype)
-  FuncKey.staticFunctions = []
-  const Empty = function (width) {
-    this.width = width
-  }
-  const layout = [
-    [
-      new Empty(3),
-      '١',
-      '٢',
-      '٣',
-      '٤',
-      '٥',
-      '٦',
-      '٧',
-      '٨',
-      '٩',
-      '٠',
-      new FuncKey('\u27F5', function backspace (ev) {
-        if (this.selectionStart === this.selectionEnd) {
-          this.value = this.value.substr(0, this.selectionStart - 1) + this.value.substr(this.selectionStart)
-        } else {
-          this.value = this.value.substr(0, this.selectionStart) + this.value.substr(this.selectionEnd)
+        function showNormalized () {
+            document.getElementById('normalized').style.display = 'block'
         }
-        fireChange(this)
-      }),
-      new FuncKey('\u21B6', function undo (ev) {
-        if (stack.length > 0) {
-          this.value = stack.pop()
-          this.dispatchEvent(new Event('change'))
+        function addCopyToClipboard (name) {
+            const button = document.getElementById('copy_' + name)
+            const input = document.getElementById('text_' + name)
+            button.addEventListener('click', function copyToClipboard (ev) {
+                input.focus()
+                input.select()
+                const r = document.execCommand('copy')
+                if (r) {
+                    button.innerHTML = 'Copied!'
+                } else {
+                    button.innerHTML = 'Not supported on this browser!'
+                }
+                window.setTimeout(function restoreButtonTitle () { button.innerHTML = 'Copy' }, 2000)
+            })
         }
-      })
+        function resizeTextarea (input, max) {
+            if (input.scrollHeight > input.clientHeight) {
+                input.style.height = Math.min(input.scrollHeight, max) + 'px'
+            }
+        }
+        function transliterate (ev) {
+            const inputAr = document.getElementById('text_ar')
+            const inputWiki = document.getElementById('text_wiki')
+            const textAr = inputAr.value
 
-    ],
-    [
-      'ص',
-      'ض',
-      'ث',
-      'ق',
-      'ف',
-      'غ',
-      'ع',
-      'ه',
-      'خ',
-      'ح',
-      ['ج',
-        'چ'],
-      ['د',
-        '﷼']
-    ],
-    [
-      new Empty(3),
-      'ش',
-      'س',
-      'ي',
-      ['ب',
-        'پ'],
-      ['ل',
-        'لا',
-        'لإ',
-        'لآ',
-        'لأ'],
-      ['ا',
-        'أ',
-        'آ',
-        'إ'],
-      'ت',
-      'ن',
-      'م',
-      ['ك',
-        'گ'],
-      'ذ'
-    ],
-    [
-      new Empty(3),
-      'ئ',
-      'ء',
-      'ؤ',
-      'ر',
-      'ى',
-      'ة',
-      'و',
-      ['ز',
-        'ژ'],
-      'ط',
-      'ظ',
-      [new Key('Diacritics', false),
-        'ً',
-        'َ',
-        'ٌ',
-        'ِ',
-        'ٍ',
-        'ّ',
-        'ْ',
-        'ٰ',
-        'ٓ',
-        'ـ',
-        'ُ'
-      ]
-    ],
-    [
-      new Empty(8),
-      '،',
-      new Key('\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583', ' '),
-      ['.',
-        '!',
-        '،',
-        '؛',
-        '؟'],
-      new Key('\u21b5', '\n')
-    ]
+            document.location.hash = '#' + (debug ? 'debug&' : '') + 'text=' + encodeURIComponent(textAr)
 
-  ]
+            if (textAr.trim().length > 0) {
+                inputWiki.value = titleCase(ar2la(textAr, mapWiki, postWiki))
+            } else {
+                inputWiki.value = ''
+            }
 
-  const fireChange = function fireChange (el) {
-    if (el.value !== stack[stack.length - 1]) {
-      stack.push(el.value)
-    }
-    if (stack.length > 1000) {
-      stack.splice(0, 500)
-    }
-    el.dispatchEvent(new Event('change'))
-  }
-  const insert = function insert (ev) {
-    if (this.dataset.menuopen) {
-      return
-    }
-    if (input.selectionStart || input.selectionStart === 0) {
-      input.value = input.value.substring(0, input.selectionStart) + this.dataset.str + input.value.substring(input.selectionEnd)
-    } else {
-      input.value += this.dataset.str
-    }
-    fireChange(input)
-  }
-  const insertDbl = function insertDbl (ev) {
-    if (this.dataset.menuopen) {
-      if (input.selectionStart || input.selectionStart === 0) {
-        input.value = input.value.substring(0, input.selectionStart) + this.dataset.str + input.value.substring(input.selectionEnd)
-      } else {
-        input.value += this.dataset.str
-      }
-      fireChange(input)
-    }
-  }
-  const mouseoverMenu = function mouseoverMenu (ev) {
-    const el = this
-    clearTimeout(parseInt(el.dataset.timeOutOut))
-    el.dataset.timeOutOver = window.setTimeout(function showMenuCaller () { showMenu.call(el, ev) }, 750)
-  }
-  const mouseoutMenu = function mouseoutMenu (ev) {
-    const el = this
-    clearTimeout(parseInt(el.dataset.timeOutOver))
-    el.dataset.timeOutOut = window.setTimeout(function hideMenuCaller () { hideMenu.call(el, ev) }, 1500)
-  }
-  const showMenu = function showMenu (ev) {
-    if (this.dataset.menuopen) {
-      return
-    }
-    if (this.parentNode.parentNode.querySelector('.menu')) {
-      // Hide other menus
-      this.parentNode.parentNode.querySelector('.menu').parentNode.dataset.menuopen = ''
-      this.parentNode.parentNode.querySelector('.menu').remove()
-    }
-    this.dataset.menuopen = 'true'
-    const menu = document.createElement('div')
-    const arr = JSON.parse(this.dataset.menu)
+            resizeTextarea(inputAr, 250)
+            resizeTextarea(inputWiki, 200)
+        }
 
-    for (let i = 0; i < arr.length; i++) {
-      if (i % 4 === 0 && i > 0) {
-        menu.appendChild(document.createElement('br'))
-      }
-      const el = makeButton(arr[i])
-      menu.appendChild(el)
-    }
+        function hex (i, padd) {
+            padd = typeof padd === 'undefined' ? 4 : padd
+            i = i.toString(16)
+            return 'U' + '0'.repeat(padd - i.length) + i.toUpperCase()
+        }
 
-    const rect = this.getClientRects()[0]
-    menu.style.left = window.scrollX + rect.left - rect.width + 'px'
-    menu.style.top = window.scrollY + rect.top + rect.height + 'px'
-    menu.className = 'menu'
-    this.appendChild(menu)
+        function replaceCharsAt (text, index, len, repl) {
+            return text.slice(0, index) + repl + text.slice(index + len)
+        }
 
-    while (window.innerWidth < parseInt(menu.style.left) + menu.clientWidth) {
-      menu.style.left = parseInt(menu.style.left) - 5 + 'px'
-    }
-  }
-  const hideMenu = function hideMenu (ev) {
-    if (!this.dataset.menuopen) {
-      return
-    }
-    if (this.querySelector('.menu')) {
-      this.querySelector('.menu').remove()
-    }
-    this.dataset.menuopen = ''
-  }
+        function hasVowelBefore (text, index) {
+            if (index > 0) {
+                if (text[index - 1] === 'ː' || text[index - 1] === '.') {
+                    return isVowel(text[index - 2])
+                } else if (isVowel(text[index - 1])) {
+                    return true
+                }
+            }
+            return false
+        }
 
-  const button = function button (title) {
-    const el = document.createElement('button')
-    el.appendChild(document.createTextNode(title))
-    return el
-  }
-  const insertOnClick = function addStrOnClick (el, str) {
-    el.dataset.str = str
-    el.addEventListener('click', insert)
-    el.addEventListener('dblclick', insertDbl)
-  }
-  const functionOnClick = function execFunctionOnClick (el, fct) {
-    el.dataset.fct = fct
-    el.addEventListener('click', function (ev) {
-      FuncKey.staticFunctions[this.dataset.fct].call(input, ev, this)
-    })
-  }
-  const makeButton = function makeButton (obj) {
-    let el
-    if (obj instanceof Empty) {
-      el = document.createElement('span')
-      el.className = 'empty'
-      for (let i = 0; i < obj.width; i++) {
-        el.appendChild(document.createTextNode('\u00A0'))
-      }
-    } else if (typeof obj === 'string') {
-      el = button(obj)
-      insertOnClick(el, obj)
-    } else if (obj instanceof Key) {
-      el = button(obj.name)
-      if (obj.str !== false) {
-        insertOnClick(el, obj.str)
-      }
-      if (obj.fct !== false) {
-        functionOnClick(el, obj.fct)
-      }
-    } else if (Array.isArray(obj)) {
-      el = makeButton(obj[0])
-      for (let i = 1; i < obj.length; i++) {
-        addToMenu(el, obj[i])
-      }
-    } else {
-      console.log('Unkown object:\n' + obj)
-    }
-    return el
-  }
-  const addToMenu = function addToMenu (el, key) {
-    if (!el.dataset.menu) {
-      el.dataset.menu = '[]'
-      el.addEventListener('mouseover', mouseoverMenu)
-      el.addEventListener('mouseout', mouseoutMenu)
-      const span = document.createElement('span')
-      span.className = 'second'
-      span.appendChild(makeButton(key).firstChild)
-      el.appendChild(span)
-    }
-    const arr = JSON.parse(el.dataset.menu)
-    arr.push(key)
-    el.dataset.menu = JSON.stringify(arr)
-  }
+        function hasVowelAfter (text, index, len) {
+            const pos = len + index
+            if (text.length >= pos) {
+                if (isVowel(text[pos])) {
+                    return true
+                }
+                if (text[pos] === '.') {
+                    if (text[pos + 1] === '@') {
+                        return text[pos + 2] === 'y'
+                    } else {
+                        return isVowel(text[pos + 1])
+                    }
+                }
+            }
+            return false
+        }
 
-  for (let r = 0; r < layout.length; r++) {
-    const row = document.createElement('div')
-    div.append(row)
-    for (let k = 0; k < layout[r].length; k++) {
-      const el = makeButton(layout[r][k])
-      row.appendChild(el)
-    }
-  }
-}
+        function isNextToVowel (text, index, len) {
+            return hasVowelBefore(text, index) || hasVowelAfter(text, index, len)
+        }
 
-</script>
+        function isVowel (char) {
+            return 'aeiouyāīūēō'.indexOf(char) !== -1
+        }
+
+        function isVowelNotY (char) {
+            return char !== 'y' && isVowel(char)
+        }
+        function tanwin (vowel, textAr, textLa, index) {
+            // If over alif or ta2marbuutha, remove aa or @t, else append after next later
+            if ('اة'.indexOf(textAr[index - 1]) !== -1) {
+                if (textLa[textLa.length - 3] === vowel) {
+                    return textLa.slice(0, textLa.length - 2) + 'n'
+                } else {
+                    return textLa.slice(0, textLa.length - 2) + vowel + 'n'
+                }
+            } else {
+                textAr[index + 1] = 'n'
+                if (textLa[textLa.length - 1] === vowel) {
+                    return textLa
+                } else {
+                    return textLa + vowel
+                }
+            }
+        }
+
+        const map = {
+
+            أ: '2',
+            إ: '2',
+            آ: '2aa',
+            ء: '2',
+            ٱ: 'ʾ',
+            ك: 'k',
+            گ: 'g',
+            ݣ: 'g',
+            ب: 'b',
+            پ: 'p',
+            و: '@w',
+            ؤ: 'u2',
+            ه: 'h',
+            د: 'd',
+            ذ: 'dh',
+            ر: 'r',
+            ز: 'z',
+            ژ: 'dz',
+            ا: 'aa',
+            ل: 'l',
+            ج: 'j',
+            چ: 'tj',
+            خ: 'kh',
+            ح: 'H',
+            م: 'm',
+            ن: 'n',
+            ت: 't',
+            ث: 'th',
+            ة: '@t',
+            ق: 'q',
+            ڧ: 'q',
+            ڨ: 'g',
+            ف: 'f',
+            ڤ: 'v',
+            ڢ: 'f',
+            ڥ: 'v',
+            س: 's',
+            ش: 'sh',
+            ڜ: 'tj',
+            ع: '3',
+            غ: 'gh',
+            ظ: 'dh',
+            ط: 'T',
+            ي: '@y',
+            ض: 'dh',
+            ص: 's',
+            ى: 'a',
+            ئ: '2',
+
+            '؟': '?',
+            ـ: '',
+            '،': ',',
+            '؛': ';',
+
+            '﷼': 'rial',
+
+            '\u064F': 'u',
+            '\u064E': 'a',
+            '\u0650': 'i',
+            '\u0652': '',
+            '\u0651': function shadda (textAr, textLa, index) {
+                // Shadda, consonant doubling
+                if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
+                    // if last char was a vowel diacritic -> double letter before diacritic
+                    if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
+                        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+                    } else {
+                        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+                    }
+                } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+                    // if @
+                    return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+                } else {
+                    return textLa + textLa[textLa.length - 1]
+                }
+            },
+            '\u064B': function fathatan (textAr, textLa, index) {
+                return tanwin('a', textAr, textLa, index)
+            },
+            '\u064C': function dhammataan (textAr, textLa, index) {
+                return tanwin('u', textAr, textLa, index)
+            },
+            '\u064D': function kasrataan (textAr, textLa, index) {
+                return tanwin('i', textAr, textLa, index)
+            },
+            '\u0670': 'aa',
+            '\u0653': function maddah (textAr, textLa, index) {
+                // Shadda, consonant doubling
+                return textLa.slice(0, textLa.length - 2) + '2' + textLa[textLa.length - 1] + textLa[textLa.length - 1]
+            },
+            '\u0654': function hamzaAbove (textAr, textLa, index) {
+                // Hamza above
+                if (['ا', 'ى', 'و'].includes(textAr[index - 2])) {
+                    return textLa.slice(0, textLa.length - 3) + '2' + textLa[textLa.length - 1]
+                } else if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+                    return textLa.slice(0, textLa.length - 2) + '2'
+                }
+                return textLa + '2a'
+            },
+            '\u0655': function hamzaBelow (textAr, textLa, index) {
+                // Hamza below
+                if (['ا', 'ى', 'و'].includes(textAr[index - 2])) {
+                    return textLa.slice(0, textLa.length - 3) + '2' + textLa[textLa.length - 1]
+                } else if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+                    return textLa.slice(0, textLa.length - 2) + '2'
+                }
+                return textLa + '2i'
+            },
+            '٠': '0',
+            '١': '1',
+            '٢': '2',
+            '٣': '3',
+            '٤': '4',
+            '٥': '5',
+            '٦': '6',
+            '٧': '7',
+            '٨': '8',
+            '٩': '9',
+            '٬': ',',
+            '٫': '.',
+            '٪': '%'
+        }
+
+        const post = {
+            '@y': function (textLa, index) {
+                if (isNextToVowel(textLa, index, 2)) {
+                    return replaceCharsAt(textLa, index, 2, 'y')
+                } else {
+                    return replaceCharsAt(textLa, index, 2, 'ii')
+                }
+            },
+            '@w': function (textLa, index) {
+                if (isNextToVowel(textLa, index, 2)) {
+                    return replaceCharsAt(textLa, index, 2, 'w')
+                } else {
+                    return replaceCharsAt(textLa, index, 2, 'uu')
+                }
+            },
+            '@t': function (textLa, index) {
+                // ة at the end of a word is a 'tan/h', else 't'
+                const whitespace = /\s/
+                if (textLa.slice(index + 2, index + 3) === '.' || textLa.trim().length === index + 2) {
+                    return replaceCharsAt(textLa, index, 2, 'h')
+                } else if (textLa.slice(index + 2, index + 3).match(/\s/)) {
+                    return replaceCharsAt(textLa, index, 2, 'tan')
+                } else {
+                    return replaceCharsAt(textLa, index, 2, 't')
+                }
+            },
+            '3aaa': '3aa',
+            'aaa': 'a'
+        }
+
+
+        const mapWiki = {
+
+            أ: '\'ā',
+            إ: '\'i',
+            آ: 'ʾā',
+            ء: '\'',
+            ٱ: 'ā',
+            ك: 'k',
+            گ: 'g',
+            ݣ: 'g',
+            ب: 'b',
+            پ: 'p',
+            و: '@w',
+            ؤ: 'uʾ',
+            ه: 'h',
+            د: 'd',
+            ذ: 'ḏ',
+            ر: 'r',
+            ز: 'z',
+            ژ: 'dz',
+            ا: 'ā',
+            ل: 'l',
+            ج: 'j',
+            چ: 'č',
+            خ: 'ḵ',
+            ح: 'ḥ',
+            م: 'm',
+            ن: 'n',
+            ت: 't',
+            ث: 'ṯ',
+            ة: '@t',
+            ق: 'q',
+            ڧ: 'q',
+            ڨ: 'g',
+            ف: 'f',
+            ڤ: 'v',
+            ڢ: 'f',
+            ڥ: 'v',
+            س: 's',
+            ش: 'š',
+            ڜ: 'tš',
+            ع: 'ʿ',
+            غ: 'ḡ',
+            ظ: 'ẓ',
+            ط: 'ṭ',
+            ي: '@y',
+            ض: 'ḍ',
+            ص: 'ṣ',
+            ى: 'a',
+            ئ: 'ʿ',
+
+            '؟': '?',
+            ـ: '',
+            '،': ',',
+            '؛': ';',
+
+            '﷼': 'rial',
+
+            '\u064F': 'u',
+            '\u064E': 'a',
+            '\u0650': 'i',
+            '\u0652': '',
+            '\u0651': function shadda (textAr, textLa, index) {
+                // Shadda, consonant doubling
+                if (['\u064F', '\u064E', '\u0650'].includes(textAr[index - 1])) {
+                    // if last char was a vowel diacritic -> double letter before diacritic
+                    if (isVowel(textLa[textLa.length - 2]) && textLa[textLa.length - 4] === '@') {
+                        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 4] + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+                    } else {
+                        return textLa.slice(0, textLa.length - 2) + textLa[textLa.length - 2] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+                    }
+                } else if (isVowel(textLa[textLa.length - 1]) && textLa[textLa.length - 3] === '@') {
+                    // if @
+                    return textLa.slice(0, textLa.length - 1) + textLa[textLa.length - 3] + textLa[textLa.length - 2] + textLa[textLa.length - 1]
+                } else {
+                    return textLa + textLa[textLa.length - 1]
+                }
+            },
+            '\u064B': function fathatan (textAr, textLa, index) {
+                return tanwin('a', textAr, textLa, index)
+            },
+            '\u064C': function dhammataan (textAr, textLa, index) {
+                return tanwin('u', textAr, textLa, index)
+            },
+            '\u064D': function kasrataan (textAr, textLa, index) {
+                return tanwin('i', textAr, textLa, index)
+            },
+            '\u0670': 'ā',
+            '\u0653': function maddah (textAr, textLa, index) {
+                // Shadda, consonant doubling
+                return textLa.slice(0, textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
+            },
+            '\u0654': function maddah (textAr, textLa, index) {
+                // Hamza above
+                if (['ا', 'ى', 'و'].includes(textAr[index - 1])) {
+                    return textLa.slice(0, textLa.length - 2) + 'ʾ'
+                }
+                return textLa + 'ʾ'
+            },
+            '٠': '0',
+            '١': '1',
+            '٢': '2',
+            '٣': '3',
+            '٤': '4',
+            '٥': '5',
+            '٦': '6',
+            '٧': '7',
+            '٨': '8',
+            '٩': '9',
+            '٬': ',',
+            '٫': '.',
+            '٪': '%'
+        }
+        
+        const capitalMap = {
+
+            " a": " A",
+            " ā": " A",
+			" b": " B",
+			" c": " C",
+			" d": " D",
+			" e": " E",
+			" f": " F",
+			" g": " G",
+			" h": " H",
+			" ḥ": " Ḥ",
+			" i": " I",
+			" j": " J",
+			" k": " K",
+			" ḵ": " Ḵ",
+			" l": " L",
+			" m": " M",
+			" n": " N",
+			" o": " O",
+			" p": " P",
+			" q": " Q",
+			" r": " R",
+			" s": " S",
+			" t": " T",
+			" u": " U",
+			" v": " V",
+			" w": " W",
+			" x": " X",
+			" y": " Y",
+			" z": " Z",
+			" \'a": " \'A",
+			" \'i": " \'I",
+			" \'u": " \'U",
+			" \'ā": " ʿĀ",
+			" ʿa": " ʿA",
+			" ʿi": " ʿI",
+			" ʿu": " ʿU",
+			" ʿā": " ʿĀ",
+			
+        }
+
+        const postWiki = {
+            '@y': function (textLa, index) {
+                if (isNextToVowel(textLa, index, 2)) {
+                    return replaceCharsAt(textLa, index, 2, 'y')
+                } else {
+                    return replaceCharsAt(textLa, index, 2, 'ī')
+                }
+            },
+            '@w': function (textLa, index) {
+                if (isNextToVowel(textLa, index, 2)) {
+                    return replaceCharsAt(textLa, index, 2, 'aw')
+                } else {
+                    return replaceCharsAt(textLa, index, 2, 'uː')
+                }
+            },
+            '@t': function (textLa, index) {
+                // ة at the end of a word is a 'tan/h', else 't'
+                const whitespace = /\s/
+                if (textLa.slice(index + 2, index + 3) === '.' || textLa.trim().length === index + 2) {
+                    return replaceCharsAt(textLa, index, 2, 'h')
+                } else if (textLa.slice(index + 2, index + 3).match(/\s/)) {
+                    return replaceCharsAt(textLa, index, 2, 'tan')
+                } else {
+                    return replaceCharsAt(textLa, index, 2, 't')
+                }
+            },
+            aa: 'ā',
+            ii: 'ī',
+            uu: 'ū',
+            ee: 'ē',
+            oo: 'ō',
+            ʿaā: 'ʿā',
+            āa: 'a'
+        }
+
+        function normalize (textAr) {
+            const old = textAr
+            textAr = textAr.normalize('NFD')
+            for (let i = 0; i < textAr.length; i++) {
+                if (i + 1 < textAr.length && textAr[i + 1].charCodeAt(0) === 0x0651 && [0x064E, 0x0650, 0x064F].includes(textAr[i].charCodeAt(0))) {
+                    // Swap SHADDA with FATHA/KASRA/DAMMA
+                    [textAr[i], textAr[i + 1]] = [textAr[i + 1], textAr[i]]
+                }
+            }
+            if (old !== textAr) {
+                document.getElementById('normalized').innerHTML = textAr.split('').map((c) => hex(c.charCodeAt(0))) + '\n' + old.split('').map((c) => hex(c.charCodeAt(0)))
+            } else {
+                document.getElementById('normalized').innerHTML = 'Already NFD'
+            }
+            return textAr
+        }
+
+        function ar2la (textAr, map, post) {
+            const logPre = document.getElementById('log')
+            logPre.innerHTML = ''
+            const log = function (text) {
+                if (!logPre.firstChild) {
+                    logPre.style.padding = '0.5em'
+                    logPre.appendChild(document.createTextNode('Errors:\n'))
+                }
+                logPre.appendChild(document.createTextNode(text))
+                logPre.appendChild(document.createTextNode('\n'))
+            }
+
+            const re = /[^\u0600-\u08FF]/u
+
+            textAr = normalize(textAr)
+
+            textAr = textAr.split('') // Arrays are passed by reference, so we can change it in the map() function
+
+            let textLa = ''
+            for (let i = 0; i < textAr.length; i++) {
+                let failed = false
+                const charAr = textAr[i]
+
+                if (charAr in map) {
+                    if (typeof map[charAr] === 'function') {
+                        textLa = map[charAr](textAr, textLa, i)
+                    } else {
+                        textLa += map[charAr]
+                    }
+                } else if (charAr.match(re)) {
+                    textLa += charAr
+                } else {
+                    textLa += '#'
+                    failed = true
+                }
+                if (debug || failed) {
+                    log(charAr + '\t' + charAr.charCodeAt(0) + '\t' + escape(charAr).replace('%', '\\'))
+                }
+            }
+
+            for (var key in post) {
+                let index = textLa.indexOf(key)
+                if (index !== -1) {
+                    if (typeof post[key] === 'function') {
+                        while (index !== -1) {
+                            textLa = post[key](textLa, index)
+                            index = textLa.indexOf(key)
+                        }
+                    } else {
+                        textLa = textLa.replace(key, post[key])
+                    }
+                }
+            }
+
+
+
+            textLa = textLa.replace(/ʿn/g, 'from')
+
+            return textLa
+        }
+
+        function keyboard (div, input) {
+            const stack = [input.value]
+            const Key = function (name, str) {
+                this.name = name
+                this.str = str
+                this.fct = false
+            }
+            function FuncKey (name, fct) {
+                Key.call(this, name, false)
+                this.fct = FuncKey.staticFunctions.length
+                FuncKey.staticFunctions.push(fct)
+            }
+            FuncKey.prototype = Object.create(Key.prototype)
+            FuncKey.staticFunctions = []
+            const Empty = function (width) {
+                this.width = width
+            }
+            const layout = [
+                [
+                    new Empty(3),
+                    '١',
+                    '٢',
+                    '٣',
+                    '٤',
+                    '٥',
+                    '٦',
+                    '٧',
+                    '٨',
+                    '٩',
+                    '٠',
+                    new FuncKey('\u27F5', function backspace (ev) {
+                        if (this.selectionStart === this.selectionEnd) {
+                            this.value = this.value.substr(0, this.selectionStart - 1) + this.value.substr(this.selectionStart)
+                        } else {
+                            this.value = this.value.substr(0, this.selectionStart) + this.value.substr(this.selectionEnd)
+                        }
+                        fireChange(this)
+                    }),
+                    new FuncKey('\u21B6', function undo (ev) {
+                        if (stack.length > 0) {
+                            this.value = stack.pop()
+                            this.dispatchEvent(new Event('change'))
+                        }
+                    })
+
+                ],
+                [
+                    'ص',
+                    'ض',
+                    'ث',
+                    'ق',
+                    'ف',
+                    'غ',
+                    'ع',
+                    'ه',
+                    'خ',
+                    'ح',
+                    ['ج',
+                        'چ'],
+                    ['د',
+                        '﷼']
+                ],
+                [
+                    new Empty(3),
+                    'ش',
+                    'س',
+                    'ي',
+                    ['ب',
+                        'پ'],
+                    ['ل',
+                        'لا',
+                        'لإ',
+                        'لآ',
+                        'لأ'],
+                    ['ا',
+                        'أ',
+                        'آ',
+                        'إ'],
+                    'ت',
+                    'ن',
+                    'م',
+                    ['ك',
+                        'گ'],
+                    'ذ'
+                ],
+                [
+                    new Empty(3),
+                    'ئ',
+                    'ء',
+                    'ؤ',
+                    'ر',
+                    'ى',
+                    'ة',
+                    'و',
+                    ['ز',
+                        'ژ'],
+                    'ط',
+                    'ظ',
+                    [new Key('Diacritics', false),
+                        'ً',
+                        'َ',
+                        'ٌ',
+                        'ِ',
+                        'ٍ',
+                        'ّ',
+                        'ْ',
+                        'ٰ',
+                        'ٓ',
+                        'ـ',
+                        'ُ'
+                    ]
+                ],
+                [
+                    new Empty(8),
+                    '،',
+                    new Key('\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583\u2583', ' '),
+                    ['.',
+                        '!',
+                        '،',
+                        '؛',
+                        '؟'],
+                    new Key('\u21b5', '\n')
+                ]
+
+            ]
+
+            const fireChange = function fireChange (el) {
+                if (el.value !== stack[stack.length - 1]) {
+                    stack.push(el.value)
+                }
+                if (stack.length > 1000) {
+                    stack.splice(0, 500)
+                }
+                el.dispatchEvent(new Event('change'))
+            }
+            const insert = function insert (ev) {
+                if (this.dataset.menuopen) {
+                    return
+                }
+                if (input.selectionStart || input.selectionStart === 0) {
+                    input.value = input.value.substring(0, input.selectionStart) + this.dataset.str + input.value.substring(input.selectionEnd)
+                } else {
+                    input.value += this.dataset.str
+                }
+                fireChange(input)
+            }
+            const insertDbl = function insertDbl (ev) {
+                if (this.dataset.menuopen) {
+                    if (input.selectionStart || input.selectionStart === 0) {
+                        input.value = input.value.substring(0, input.selectionStart) + this.dataset.str + input.value.substring(input.selectionEnd)
+                    } else {
+                        input.value += this.dataset.str
+                    }
+                    fireChange(input)
+                }
+            }
+            const mouseoverMenu = function mouseoverMenu (ev) {
+                const el = this
+                clearTimeout(parseInt(el.dataset.timeOutOut))
+                el.dataset.timeOutOver = window.setTimeout(function showMenuCaller () { showMenu.call(el, ev) }, 750)
+            }
+            const mouseoutMenu = function mouseoutMenu (ev) {
+                const el = this
+                clearTimeout(parseInt(el.dataset.timeOutOver))
+                el.dataset.timeOutOut = window.setTimeout(function hideMenuCaller () { hideMenu.call(el, ev) }, 1500)
+            }
+            const showMenu = function showMenu (ev) {
+                if (this.dataset.menuopen) {
+                    return
+                }
+                if (this.parentNode.parentNode.querySelector('.menu')) {
+                    // Hide other menus
+                    this.parentNode.parentNode.querySelector('.menu').parentNode.dataset.menuopen = ''
+                    this.parentNode.parentNode.querySelector('.menu').remove()
+                }
+                this.dataset.menuopen = 'true'
+                const menu = document.createElement('div')
+                const arr = JSON.parse(this.dataset.menu)
+
+                for (let i = 0; i < arr.length; i++) {
+                    if (i % 4 === 0 && i > 0) {
+                        menu.appendChild(document.createElement('br'))
+                    }
+                    const el = makeButton(arr[i])
+                    menu.appendChild(el)
+                }
+
+                const rect = this.getClientRects()[0]
+                menu.style.left = window.scrollX + rect.left - rect.width + 'px'
+                menu.style.top = window.scrollY + rect.top + rect.height + 'px'
+                menu.className = 'menu'
+                this.appendChild(menu)
+
+                while (window.innerWidth < parseInt(menu.style.left) + menu.clientWidth) {
+                    menu.style.left = parseInt(menu.style.left) - 5 + 'px'
+                }
+            }
+            const hideMenu = function hideMenu (ev) {
+                if (!this.dataset.menuopen) {
+                    return
+                }
+                if (this.querySelector('.menu')) {
+                    this.querySelector('.menu').remove()
+                }
+                this.dataset.menuopen = ''
+            }
+
+            const button = function button (title) {
+                const el = document.createElement('button')
+                el.appendChild(document.createTextNode(title))
+                return el
+            }
+            const insertOnClick = function addStrOnClick (el, str) {
+                el.dataset.str = str
+                el.addEventListener('click', insert)
+                el.addEventListener('dblclick', insertDbl)
+            }
+            const functionOnClick = function execFunctionOnClick (el, fct) {
+                el.dataset.fct = fct
+                el.addEventListener('click', function (ev) {
+                    FuncKey.staticFunctions[this.dataset.fct].call(input, ev, this)
+                })
+            }
+            const makeButton = function makeButton (obj) {
+                let el
+                if (obj instanceof Empty) {
+                    el = document.createElement('span')
+                    el.className = 'empty'
+                    for (let i = 0; i < obj.width; i++) {
+                        el.appendChild(document.createTextNode('\u00A0'))
+                    }
+                } else if (typeof obj === 'string') {
+                    el = button(obj)
+                    insertOnClick(el, obj)
+                } else if (obj instanceof Key) {
+                    el = button(obj.name)
+                    if (obj.str !== false) {
+                        insertOnClick(el, obj.str)
+                    }
+                    if (obj.fct !== false) {
+                        functionOnClick(el, obj.fct)
+                    }
+                } else if (Array.isArray(obj)) {
+                    el = makeButton(obj[0])
+                    for (let i = 1; i < obj.length; i++) {
+                        addToMenu(el, obj[i])
+                    }
+                } else {
+                    console.log('Unkown object:\n' + obj)
+                }
+                return el
+            }
+            const addToMenu = function addToMenu (el, key) {
+                if (!el.dataset.menu) {
+                    el.dataset.menu = '[]'
+                    el.addEventListener('mouseover', mouseoverMenu)
+                    el.addEventListener('mouseout', mouseoutMenu)
+                    const span = document.createElement('span')
+                    span.className = 'second'
+                    span.appendChild(makeButton(key).firstChild)
+                    el.appendChild(span)
+                }
+                const arr = JSON.parse(el.dataset.menu)
+                arr.push(key)
+                el.dataset.menu = JSON.stringify(arr)
+            }
+
+            for (let r = 0; r < layout.length; r++) {
+                const row = document.createElement('div')
+                div.append(row)
+                for (let k = 0; k < layout[r].length; k++) {
+                    const el = makeButton(layout[r][k])
+                    row.appendChild(el)
+                }
+            }
+        }
+		
+		function titleCase(str) {
+		   var splitStr = str.toLowerCase().split(' ');
+		   for (var i = 0; i < splitStr.length; i++) {
+			   // You do not need to check if i is larger than splitStr length, as your for does that for you
+			   // Assign it back to the array
+			   splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+		   }
+		   // Directly return the joined string
+		   return splitStr.join(' '); 
+		}
+
+    </script>
 </head>
 <body>
-  <header>
-  <h1>Transcription of Arabic script according to Duolingo</h1>
-  </header>
-  <main>
-  <article>
-  <div>Transliterate Arabic script to latin characters, supports Arabic chat alphabet Arabish similiar to the Duolingo way, IPA notation and the Wikipedia notation. Offers a virtual keyboard to type in Arabic.</div>
-  <div>
-    <div class="column_left">
-      <label class="input_label" for="text_ar">Arabic script:</label>
-      <br>
-      <br>
-      <button id="copy_ar" title="Copy arabic to clipboard">Copy</button>
-    </div>
-    <div class="column_right">
-      <textarea id="text_ar" dir="rtl">العَرَبِيَّة‎</textarea>
-    </div>
-    <br class="cl">
-    <div class="column_left">
-      <label class="input_label" for="text_la">Latin script:</label>
-      <br>
-      <br>
-      <button id="copy_la" title="Copy result to clipboard">Copy</button>
-    </div>
-    <div class="column_right">
-      <textarea id="text_la" dir="ltr" readonly>‎</textarea>
-    </div>
-    <br class="cl">
-    <div id="controls_ipa">
-      <input type="checkbox" name="enable_ipa" id="enable_ipa">
-      <label for="enable_ipa">IPA</label>
-    </div>
-    <div id="container_ipa">
-      <div class="column_left">
-        <label class="input_label" for="text_ipa">IPA script:</label>
-        <br>
-        <br>
-        <button id="copy_ipa" title="Copy result to clipboard">Copy</button>
-      </div>
-      <div class="column_right">
-        <textarea id="text_ipa" dir="ltr" readonly>‎</textarea>
-      </div>
-      <br class="cl">
-    </div>
-    <div id="controls_wiki">
-      <input type="checkbox" name="enable_wiki" id="enable_wiki">
-      <label for="enable_wiki">Wiki</label>
-    </div>
-    <div id="container_wiki">
-      <div class="column_left">
-        <label class="input_label" for="text_wiki">Wiki script:</label>
-        <br>
-        <br>
-        <button id="copy_wiki" title="Copy result to clipboard">Copy</button>
-      </div>
-      <div class="column_right">
-        <textarea id="text_wiki" dir="ltr" readonly>‎</textarea>
-      </div>
-      <br class="cl">
-    </div>
-    <br>
-    <hr>
-    <br>
-    <div id="keyboard"></div>
-    <br>
-    <hr>
-    <pre id="normalized"></pre>
-    <br>
-    <pre id="log"></pre>
-    <br>
-    <hr>
-    <h2>Resources:</h2>
-    <ul>
-    <li><a href="https://en.wikipedia.org/wiki/Arabic_chat_alphabet">en.wikipedia.org/wiki/Arabic_chat_alphabet</a></li>
-    <li><a href="https://duolingo.fandom.com/wiki/Arabic_Skill:Alphabet_1">duolingo.fandom.com/wiki/Arabic_Skill:Alphabet_1</a></li>
-    </ul>
-  </div>
-  </article>
-  </main>
+<header>
+    <h1>Transcription of Arabic script according to Duolingo</h1>
+</header>
+<main>
+    <article>
+        <div>Transliterate Arabic script to latin characters, supports Arabic chat alphabet Arabish similiar to the Duolingo way, IPA notation and the Wikipedia notation. Offers a virtual keyboard to type in Arabic.</div>
+        <div>
+            <div class="column_left">
+                <label class="input_label" for="text_ar">Arabic script:</label>
+                <br>
+                <br>
+                <button id="copy_ar" title="Copy arabic to clipboard">Copy</button>
+            </div>
+            <div class="column_right">
+                <textarea id="text_ar" dir="rtl">العَرَبِيَّة‎</textarea>
+            </div>
+            <br class="cl">
+            <div id="container_wiki">
+                <div class="column_left">
+                    <label class="input_label" for="text_wiki">Wiki script:</label>
+                    <br>
+                    <br>
+                    <button id="copy_wiki" title="Copy result to clipboard">Copy</button>
+                </div>
+                <div class="column_right">
+                    <textarea id="text_wiki" dir="ltr" readonly>‎</textarea>
+                </div>
+                <br class="cl">
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div id="keyboard"></div>
+            <br>
+            <hr>
+            <pre id="normalized"></pre>
+            <br>
+            <pre id="log"></pre>
+            <br>
+            <hr>
+        </div>
+    </article>
+</main>
 
-  <!-- https://github.com/tholman/github-corners -->
-  <div>
-  <a href="https://github.com/cvzi/Arabic-Transcription" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#1cb0f6; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-  </div>
-
-  <footer>
-  <hr>
-  <div id="attribution" data-nosnippet>
-    <p>
-      This site is open source. You can <a href="https://github.com/cvzi/Arabic-Transcription/edit/master/index.html">improve this page</a> or <a href="https://github.com/cvzi/Arabic-Transcription/issues">report a problem</a>.
-    </p>
-    <p>
-      License: GNU GENERAL PUBLIC LICENSE v3 (<a href="https://github.com/cvzi/Arabic-Transcription/blob/master/LICENSE">LICENSE</a>)
-    </p>
-  </div>
-  </footer>
 
 </body>
 </html>
