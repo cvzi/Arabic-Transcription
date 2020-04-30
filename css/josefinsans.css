@@ -1,0 +1,7 @@
+/* latin */
+@font-face {
+  font-family: 'Josefin Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(JosefinSans/josefinsans.woff2) format('woff2'), url(JosefinSans/josefinsans.ttf) format('truetype');
+}
