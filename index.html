@@ -313,6 +313,9 @@ function tanwin (vowel, textAr, textLa, index) {
   // If over alif or ta2marbuutha, remove aa or @t, else append after next later
   if ('اة'.indexOf(textAr[index - 1]) !== -1) {
     if (textLa[textLa.length - 3] === vowel) {
+      if (textAr.length == index + 1 || textAr[index + 1].match(/\s/)){
+        return textLa + vowel + 'n'
+      }
       return textLa.slice(0, textLa.length - 2) + 'n'
     } else {
       return textLa.slice(0, textLa.length - 2) + vowel + 'n'
