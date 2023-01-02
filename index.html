@@ -330,6 +330,26 @@ function tanwin (vowel, textAr, textLa, index) {
   }
 }
 
+function harakat (vowel, textAr, textLa, index) {
+    // If over alif or ta2marbuutha, remove aa or @t
+    if ('اة'.indexOf(textAr[index - 1]) !== -1) {
+      if (textLa[textLa.length - 3] === vowel) {
+        if (textAr.length == index + 1 || textAr[index + 1].match(/\s/)){
+          return textLa + isVowelNotY
+        }
+        return textLa.slice(0, textLa.length - 2)
+      } else {
+        return textLa.slice(0, textLa.length - 2) + vowel
+      }
+    } else {
+      if (textLa[textLa.length - 1] === vowel) {
+        return textLa
+      } else {
+        return textLa + vowel
+      }
+    }
+}
+
 const map = {
 
   أ: '2',
@@ -388,9 +408,15 @@ const map = {
 
   '﷼': 'rial',
 
-  '\u064F': 'u',
-  '\u064E': 'a',
-  '\u0650': 'i',
+  '\u064F': function kasrah (textAr, textLa, index) {
+    return harakat('u', textAr, textLa, index)
+  },
+  '\u064E': function fathah (textAr, textLa, index) {
+    return harakat('a', textAr, textLa, index)
+  },
+  '\u0650': function dhammah (textAr, textLa, index) {
+    return harakat('i', textAr, textLa, index)
+  },
   '\u0652': '',
   '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
@@ -543,9 +569,15 @@ const mapIpa = {
 
   '﷼': 'rial',
 
-  '\u064F': 'u',
-  '\u064E': 'a',
-  '\u0650': 'i',
+  '\u064F': function kasrah (textAr, textLa, index) {
+    return harakat('u', textAr, textLa, index)
+  },
+  '\u064E': function fathah (textAr, textLa, index) {
+    return harakat('a', textAr, textLa, index)
+  },
+  '\u0650': function dhammah (textAr, textLa, index) {
+    return harakat('i', textAr, textLa, index)
+  },
   '\u0652': '',
   '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
@@ -581,7 +613,7 @@ const mapIpa = {
   '\u064D': function kasrataan (textAr, textLa, index) {
     return tanwin('i', textAr, textLa, index)
   },
-  '\u0670': 'ā',
+  '\u0670': 'a_',
   '\u0653': function maddah (textAr, textLa, index, lastArCharLen) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 2) + 'ʔ' + textLa[textLa.length - 2] + 'ː'
@@ -645,7 +677,7 @@ const mapWiki = {
 
   أ: 'ʾ',
   إ: 'ʾ',
-  آ: 'ʾā',
+  آ: 'ʾa_',
   ء: 'ʾ',
   ٱ: 'ʾ',
   ك: 'k',
@@ -661,7 +693,7 @@ const mapWiki = {
   ر: 'r',
   ز: 'z',
   ژ: 'dz',
-  ا: 'ā',
+  ا: 'a_',
   ل: 'l',
   ج: 'j',
   چ: 'č',
@@ -699,9 +731,15 @@ const mapWiki = {
 
   '﷼': 'rial',
 
-  '\u064F': 'u',
-  '\u064E': 'a',
-  '\u0650': 'i',
+  '\u064F': function kasrah (textAr, textLa, index) {
+    return harakat('u', textAr, textLa, index)
+  },
+  '\u064E': function fathah (textAr, textLa, index) {
+    return harakat('a', textAr, textLa, index)
+  },
+  '\u0650': function dhammah (textAr, textLa, index) {
+    return harakat('i', textAr, textLa, index)
+  },
   '\u0652': '',
   '\u0651': function shadda (textAr, textLa, index) {
     // Shadda, consonant doubling
@@ -728,7 +766,7 @@ const mapWiki = {
   '\u064D': function kasrataan (textAr, textLa, index) {
     return tanwin('i', textAr, textLa, index)
   },
-  '\u0670': 'ā',
+  '\u0670': 'a_',
   '\u0653': function maddah (textAr, textLa, index) {
     // Shadda, consonant doubling
     return textLa.slice(0, textLa.length - 1) + 'ʾ' + textLa[textLa.length - 1]
@@ -781,6 +819,8 @@ const postWiki = {
       return replaceCharsAt(textLa, index, 2, 't')
     }
   },
+  aa_: 'ā',
+  a_: 'ā',
   aa: 'ā',
   ii: 'ī',
   uu: 'ū',
